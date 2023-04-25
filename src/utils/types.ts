@@ -37,7 +37,8 @@ export interface IdailyWeatherData {
 }
 
 export interface IMultipleSelectProps {
-  selectedTime : string,
-  setSelectedTime : any,
-  dailyWeatherData : IdailyWeatherData[]
+  setVariable : string,
+  setterFunction : any,
+  data : unknown[],
+  inputCategory?: string,
 }

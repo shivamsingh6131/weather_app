@@ -10,6 +10,7 @@ const App = () => {
   const [dailyWeatherData, setDailyWeatherData] = useState([]);
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [customisedData , setCustomisedData] = useState<number>(0)
+  const [selectedCriteria , setSelectedCriteria] = useState<string>('')
 
   useEffect(() => {
     const filterdData : IdailyWeatherData[] = dailyWeatherData?.slice(0,23)?.filter((item : IdailyWeatherData) => item?.time?.includes(selectedTime) )
@@ -42,6 +43,14 @@ const App = () => {
 
   const propData = createSearchAppBarProps();
 
+  const list = [
+    "Hourly",
+    "Today",
+    "Tomorrow",
+    "Daily",
+    "Weekly",
+  ]
+
   return (
     <div style={{ paddingBottom: "50px" }}>
       <Header propData={propData} />
@@ -52,7 +61,8 @@ const App = () => {
       />
       <h3 style={{ textAlign: "center" }}>Data On Request</h3>
       <div style={{ textAlign: "center" }}>
-        <CustomSelect dailyWeatherData={dailyWeatherData} selectedTime={selectedTime} setSelectedTime={setSelectedTime} />
+        <CustomSelect data={list} setVariable={selectedCriteria} setterFunction={setSelectedCriteria} inputCategory="Select Category"  />
+        <CustomSelect data={dailyWeatherData} setVariable={selectedTime} setterFunction={setSelectedTime} inputCategory="Hourly" />
       </div>
       <CustomCard
         setDailyWeatherData={setDailyWeatherData}

@@ -1,10 +1,9 @@
 import * as React from "react";
-import { Theme, useTheme } from "@mui/material/styles";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { IMultipleSelectProps } from "../utils/types";
 
 const ITEM_HEIGHT = 48;
@@ -18,50 +17,53 @@ const MenuProps = {
   },
 };
 
-function getStyles(name: string, personName: string[], theme: Theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
 export default function MultipleSelect(props: IMultipleSelectProps) {
-  const theme = useTheme();
- 
-
-  const handleChange = (event:any) => {
+  const handleChange = (event: any) => {
     const {
       target: { value },
     } = event;
-    props?.setSelectedTime(
+    props?.setterFunction(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
   };
 
+  console.log("props asdf", props?.data);
+
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-name-label">Hourly</InputLabel>
+        <InputLabel id="demo-multiple-name-label">
+          {props?.inputCategory}
+        </InputLabel>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
-          value={props?.selectedTime}
+          value={props?.setVariable}
           onChange={handleChange}
           input={<OutlinedInput label="Name" />}
           MenuProps={MenuProps}
         >
-          {props?.dailyWeatherData?.slice(0, 23)?.map((time: any, index : number) => (
-            <MenuItem
-              key={time + index}
-              value={time?.time?.split("T")?.[1]}
-            //   style={getStyles(time, props?.selectedTime, theme)}
-            >
-              {time?.time?.split("T")?.[1]}
-            </MenuItem>
-          ))}
+          {props?.data?.slice(0, 23)?.map((item: any, index: number) => {
+            console.log("item here" , item);
+            // console.log("item here" , props?.inputCategory === "Select Category");
+
+            return(
+                <MenuItem
+                  key={item + index}
+                  value={
+                    props?.inputCategory === "Select Category"
+                      ? item
+                      : item?.time?.split("T")?.[1]
+                  }
+                  //   style={getStyles(time, props?.selectedTime, theme)}
+                >
+                  {props?.inputCategory === "Select Category"
+                      ? item
+                      : item?.time?.split("T")?.[1]}
+                </MenuItem>
+              )
+          })}
         </Select>
       </FormControl>
     </div>
