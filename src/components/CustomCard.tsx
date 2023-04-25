@@ -12,8 +12,6 @@ import {
   getCurrentLocation,
 } from "../utils/helper";
 
-//state name from lat & long
-// https://nominatim.openstreetmap.org/reverse?lat=23.0438564&lon=72.5086395
 
 function CustomCard() {
   const [cordinates, setCordinates] = useState<Icordinates>({

@@ -1,10 +1,14 @@
-import React from 'react'
-import CustomCard from './components/CustomCard'
+import React from "react";
+import CustomCard from "./components/CustomCard";
+import SearchAppBar from "./components/Header";
 
 const App = () => {
   return (
-    <CustomCard />
-  )
-}
+    <div>
+      <SearchAppBar />
+      <CustomCard />
+    </div>
+  );
+};
 
-export default App
+export default App;
