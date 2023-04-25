@@ -1,12 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomCard from "./components/CustomCard";
-import SearchAppBar from "./components/Header";
+import Header from "./components/Header";
+import HorizontalScroller from "./components/HorizontalScroller";
+import CustomSelect from "./components/CustomSelect";
+import { IdailyWeatherData } from "./utils/types";
 
 const App = () => {
+  const [searchText, setSearchText] = useState<string>("");
+  const [dailyWeatherData, setDailyWeatherData] = useState([]);
+  const [selectedTime, setSelectedTime] = useState<string>('');
+  const [customisedData , setCustomisedData] = useState<number>(0)
+
+  useEffect(() => {
+    const filterdData : IdailyWeatherData[] = dailyWeatherData?.slice(0,23)?.filter((item : IdailyWeatherData) => item?.time?.includes(selectedTime) )
+    setCustomisedData(filterdData?.[0]?.temperature)
+  } , [selectedTime])
+
+  const createSearchAppBarProps = () => {
+    return {
+      searchText,
+      setSearchText,
+    };
+  };
+
+  const fetchByCityName = async (city: string) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search/?city=${searchText}&format=json&addressdetails=1&limit=1&polygon_svg=1`
+      );
+      const data = await response.json();
+      console.log("🚀 ~ file: App.tsx:21 ~ fetchByCityName ~ data:", data);
+      // setCurrentWeather({ ...currentWeather, ...data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    searchText?.length > 0 && fetchByCityName(searchText);
+  }, [searchText]);
+
+  const propData = createSearchAppBarProps();
+
   return (
-    <div>
-      <SearchAppBar />
-      <CustomCard />
+    <div style={{ paddingBottom: "50px" }}>
+      <Header propData={propData} />
+      <h3 style={{ textAlign: "center" }}>Live Data</h3>
+      <CustomCard
+        setDailyWeatherData={setDailyWeatherData}
+        dailyWeatherData={dailyWeatherData}
+      />
+      <h3 style={{ textAlign: "center" }}>Data On Request</h3>
+      <div style={{ textAlign: "center" }}>
+        <CustomSelect dailyWeatherData={dailyWeatherData} selectedTime={selectedTime} setSelectedTime={setSelectedTime} />
+      </div>
+      <CustomCard
+        setDailyWeatherData={setDailyWeatherData}
+        dailyWeatherData={dailyWeatherData}
+        isCustomised={Boolean(customisedData)}
+        customisedData={customisedData}
+      />
+
+      {/* <div style={{ paddingTop: "5vh" }}>
+        <HorizontalScroller dailyWeatherData={dailyWeatherData} />
+      </div> */}
     </div>
   );
 };

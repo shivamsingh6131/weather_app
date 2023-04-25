@@ -6,14 +6,14 @@ import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import CustomTypography from "./CustomTypography";
-import { Icordinates } from "../utils/types";
+import { ICustomCardProps, ICustomProps, Icordinates } from "../utils/types";
 import {
   fetchWeatherData,
   getCurrentLocation,
+  reformatTimeWiseWeather,
 } from "../utils/helper";
 
-
-function CustomCard() {
+function CustomCard(props: ICustomCardProps) {
   const [cordinates, setCordinates] = useState<Icordinates>({
     latitude: 0,
     longitude: 0,
@@ -27,13 +27,28 @@ function CustomCard() {
 
   useEffect(() => {
     cordinates.latitude !== 0 &&
-      fetchWeatherData(cordinates, setCurrentWeather, currentWeather);
+      fetchWeatherData(
+        cordinates,
+        setCurrentWeather,
+        currentWeather,
+        props.setDailyWeatherData
+      );
   }, [cordinates]);
 
+  console.log("props?.customisedData", props?.customisedData);
+
   return (
-    <div style={{textAlign : "center"}}>
+    <div style={{ textAlign: "center" }}>
       <Grid container spacing={2} style={{ margin: "auto" }}>
-        <Grid item xs={1} sm={2} md={3.5} lg={4} xl={4.5}></Grid>
+        <Grid
+          item
+          xs={1}
+          sm={2}
+          md={3.5}
+          lg={4}
+          xl={4.5}
+          style={{ height: "40vh" }}
+        ></Grid>
         <Grid
           item
           xs={10}
@@ -41,7 +56,7 @@ function CustomCard() {
           md={5}
           lg={4}
           xl={3}
-          style={{ height: "30vh", paddingLeft: "0px" }}
+          style={{ height: "40vh", paddingLeft: "0px" }}
           sx={{ pl: 0 }}
         >
           <Card
@@ -54,14 +69,18 @@ function CustomCard() {
                 alignItems={"center"}
               >
                 <CustomTypography
-                  condition={cityName?.address?.suburb}
-                  typegraphyData={cityName?.address?.suburb}
+                  condition={cityName?.results?.[0]?.components?.suburb}
+                  typegraphyData={cityName?.results?.[0]?.components?.suburb}
                   typegraphystyles={{ fontSize: 26 }}
                   loaderHeightWidth={"35"}
                 />
                 <CustomTypography
                   condition={currentWeather?.current_weather?.temperature}
-                  typegraphyData={currentWeather?.current_weather?.temperature}
+                  typegraphyData={
+                    props?.isCustomised
+                      ? props?.customisedData
+                      : currentWeather?.current_weather?.temperature
+                  }
                   temperatureData={
                     currentWeather?.hourly_units?.temperature_2m || ""
                   }
@@ -90,21 +109,32 @@ function CustomCard() {
                 loaderHeightWidth={"40"}
               />
               <CustomTypography
-                condition={Boolean(cityName?.address?.country)}
-                typegraphyData={cityName?.address?.country ?? ""}
+                condition={Boolean(cityName?.results?.[0]?.components?.country)}
+                typegraphyData={cityName?.results?.[0]?.components?.country}
                 typegraphystyles={{ fontSize: 36, mt: 1.5, mb: 0 }}
                 loaderHeightWidth={"50"}
               />
               <CustomTypography
-                condition={Boolean(cityName?.address?.country)}
-                typegraphyData={cityName?.address?.state_district ?? ""}
+                condition={Boolean(
+                  cityName?.results?.[0]?.components?.state_district
+                )}
+                typegraphyData={
+                  cityName?.results?.[0]?.components?.state_district
+                }
                 typegraphystyles={{ mb: 1.5, fontSize: 16 }}
                 loaderHeightWidth={"50"}
               />
             </CardContent>
           </Card>
         </Grid>
-        <Grid xs={1} sm={2} md={3.5} lg={4} xl={4.5}></Grid>
+        <Grid
+          xs={1}
+          sm={2}
+          md={3.5}
+          lg={4}
+          xl={4.5}
+          style={{ height: "40vh" }}
+        ></Grid>
       </Grid>
     </div>
   );

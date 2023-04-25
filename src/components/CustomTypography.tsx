@@ -10,6 +10,7 @@ const CustomTypography = (props: ICustomTypographyProps) => {
           sx={{ ...props.typegraphystyles }}
           color="text.secondary"
           gutterBottom
+          {...props.additionalProps}
         >
           {props.typegraphyData}
           <span>{props.temperatureData || ``} </span>
