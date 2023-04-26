@@ -34,7 +34,7 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl sx={{ m: 1, width: 300 }} >
         <InputLabel id="demo-multiple-name-label">
           {props?.inputCategory}
         </InputLabel>
@@ -52,14 +52,14 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
               <MenuItem
                 key={item + index}
                 value={
-                  props?.inputCategory === "Select Category"
+                  props?.inputCategory === "Criteria"
                     ? item
                     : props?.inputCategory === "Daily"|| props?.inputCategory === "Weekly"
                     ? item?.time
                     : item?.time?.split("T")?.[1]
                 }
               >
-                {props?.inputCategory === "Select Category"
+                {props?.inputCategory === "Criteria"
                   ? item
                   : props?.inputCategory === "Daily" || props?.inputCategory === "Weekly"
                   ? item?.time

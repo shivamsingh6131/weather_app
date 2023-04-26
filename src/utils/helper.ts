@@ -57,10 +57,6 @@ export const fetchWeatherDataForCity = async (
       `https://api.opencagedata.com/geocode/v1/json?key=a47ec1100cf64526b3cf924711e95230&q=${currentCity}`
     );
     const cityCordinatesData = await cityCordinates.json();
-    console.log(
-      "🚀 ~ file: helper.ts:60 ~ cityCordinatesData:",
-      cityCordinatesData
-    );
     const latitude = cityCordinatesData?.results?.[0]?.geometry?.lat;
     const longitude = cityCordinatesData?.results?.[0]?.geometry?.lng;
     const Country = cityCordinatesData?.results?.[0]?.components?.country;
@@ -71,9 +67,11 @@ export const fetchWeatherDataForCity = async (
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&current_weather=true&&forecast_days=1`
     );
     const weatherResponsData = await weatherResponse.json();
-    const temperature = weatherResponsData?.current_weather?.temperature;
+    console.log("🚀 ~ file: helper.ts:70 ~ weatherResponsData:", weatherResponsData)
 
-    console.log("🚀 ~ file: helper.ts:67 ~ data:", weatherResponsData);
+    //if error in api response
+    if (weatherResponsData?.error) return setCityListData([...cityListData]);
+    const temperature = weatherResponsData?.current_weather?.temperature;
 
     const prepareCityData = {
       Country,
@@ -83,10 +81,17 @@ export const fetchWeatherDataForCity = async (
       latitude,
       currentCity,
     };
-    setCityListData([...cityListData, prepareCityData]);
-    console.log("🚀 ~ file: helper.ts:75 ~ prepareCityData:", prepareCityData);
+    //to fix multiple same city card.
+    const removeSameObjects = cityListData?.reduce((last: any, curr: any) => {
+      if (curr?.currentCity === currentCity) {
+        return [...last];
+      }
+      return [...last, curr];
+    }, []);
 
-    // setCityListData([...cityListData, data]);
+    console.log("prepareCityData" ,prepareCityData);
+
+    setCityListData([...removeSameObjects, prepareCityData]);
   } catch (error) {
     console.log(error);
   }

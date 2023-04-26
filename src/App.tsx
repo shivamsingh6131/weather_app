@@ -6,7 +6,7 @@ import CustomSelect from "./components/CustomSelect";
 import { IdailyWeatherData } from "./utils/type/types";
 import { ISelectedCriteria } from "./utils/type/enum";
 import CityCard from "./components/CityCard";
-import { Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { fetchWeatherDataForCity } from "./utils/helper";
 
 const App = () => {
@@ -22,7 +22,17 @@ const App = () => {
   const [selectedCriteria, setSelectedCriteria] = useState<string>("");
   const [selectedCriteriaData, setSelectedCriteriaData] = useState<any>([]);
   //city wise data
-  const [cityListData, setCityListData] = useState([]);
+  const [cityListData, setCityListData] = useState<any>([
+    ...(JSON.parse(localStorage.getItem("cityListData") as string) ?? []),
+  ]);
+
+  // useEffect(() => {
+  //   setCityListData([
+  //     ...(JSON.parse(localStorage.getItem("cityListData") as string) ?? []),
+  //     ...cityListData,
+  //   ]);
+  // }, []);
+
   console.log("🚀 ~ file: App.tsx:26 ~ App ~ cityListData:", cityListData);
 
   //Debouncing
@@ -33,29 +43,33 @@ const App = () => {
         setDebouncedSearchText([...debouncedSearchText, searchText]);
     }, 2000);
 
+    console.log("debouncedSearchText", debouncedSearchText);
+
     return () => clearTimeout(getData);
   }, [searchText]);
 
   //featch weather for city
   useEffect(() => {
-    console.log(
-      "debouncedSearchText[debouncedSearchText-1] !== searchText",
-      searchText !== "" &&
-        debouncedSearchText[debouncedSearchText - 1] !== searchText
-    );
-    console.log("🚀 ~ file: App.tsx:42 ~ useEffect ~ searchText:", searchText);
-    console.log(
-      "🚀 ~ file: App.tsx:42 ~ useEffect ~ debouncedSearchText[debouncedSearchText-1]:",
-      debouncedSearchText[debouncedSearchText - 1]
-    );
+    //VISIT
+    // cityListData?.length <= debouncedSearchText?.length &&
     searchText !== "" &&
-      debouncedSearchText[debouncedSearchText - 1] !== searchText &&
+      debouncedSearchText?.includes(searchText) &&
       fetchWeatherDataForCity(
         debouncedSearchText,
         cityListData,
         setCityListData
       );
   }, [debouncedSearchText]);
+
+  // update localstorage
+  useEffect(() => {
+    localStorage.setItem("cityListData", JSON.stringify([...cityListData]));
+  }, [cityListData]);
+
+  console.log(
+    "asdfasdfasdf",
+    JSON.parse(localStorage.getItem("cityListData") as string)
+  );
 
   const daily = [
     "Monday",
@@ -147,69 +161,100 @@ const App = () => {
     };
   };
 
-  const fetchByCityName = async (city: string) => {
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search/?city=${searchText}&format=json&addressdetails=1&limit=1&polygon_svg=1`
-      );
-      const data = await response.json();
-      console.log("🚀 ~ file: App.tsx:21 ~ fetchByCityName ~ data:", data);
-      // setCurrentWeather({ ...currentWeather, ...data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    searchText?.length > 0 && fetchByCityName(searchText);
-  }, [searchText]);
-
   const propData = createSearchAppBarProps();
 
   return (
-    <div style={{ paddingBottom: "50px" }}>
-      <Header propData={propData} />
-      <h3 style={{ textAlign: "center" }}>Live Data</h3>
-      <CustomCard
-        setDailyWeatherData={setDailyWeatherData}
-        dailyWeatherData={dailyWeatherData}
-      />
-      <h3 style={{ textAlign: "center" }}>Data On Request</h3>
-      <div style={{ textAlign: "center" }}>
-        <CustomSelect
-          data={list}
-          setVariable={selectedCriteria}
-          setterFunction={setSelectedCriteria}
-          inputCategory="Select Category"
+    <div
+      style={{ paddingBottom: "50px", backgroundColor: "#EEEEEE", height: "" }}
+    >
+      <div style={{ paddingBottom: "50px" }}>
+        <Header propData={propData} />
+        <h3 style={{ textAlign: "center" }}>Live Data</h3>
+        <CustomCard
+          setDailyWeatherData={setDailyWeatherData}
+          dailyWeatherData={dailyWeatherData}
         />
-        {selectedCriteria && (
+        <h3 style={{ textAlign: "center" }}>Data On Request</h3>
+        <div style={{ textAlign: "center" }}>
           <CustomSelect
-            data={selectedCriteriaData}
-            setVariable={selectedTime}
-            setterFunction={setSelectedTime}
-            inputCategory={
-              selectedCriteria?.[0] === "Daily"
-                ? "Daily"
-                : selectedCriteria?.[0] === "Weekly"
-                ? "Weekly"
-                : "Hourly"
-            }
+            data={list}
+            setVariable={selectedCriteria}
+            setterFunction={setSelectedCriteria}
+            inputCategory="Criteria"
+          />
+          {selectedCriteria && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                sx={{ paddingRight: "30px", height: "56px" }}
+                variant="outlined"
+                onClick={() => {
+                  setSelectedCriteria("");
+                }}
+              >
+                Remove
+              </Button>
+              <CustomSelect
+                data={selectedCriteriaData}
+                setVariable={selectedTime}
+                setterFunction={setSelectedTime}
+                inputCategory={
+                  selectedCriteria?.[0] === "Daily"
+                    ? "Daily"
+                    : selectedCriteria?.[0] === "Weekly"
+                    ? "Weekly"
+                    : "Hourly"
+                }
+              />
+            </div>
+          )}
+        </div>
+        {selectedCriteria && (
+          <CustomCard
+            setDailyWeatherData={setDailyWeatherData}
+            dailyWeatherData={selectedCriteriaData}
+            isCustomised={Boolean(customisedData)}
+            customisedData={customisedData}
           />
         )}
       </div>
-      {selectedCriteria && (
-        <CustomCard
-          setDailyWeatherData={setDailyWeatherData}
-          dailyWeatherData={selectedCriteriaData}
-          isCustomised={Boolean(customisedData)}
-          customisedData={customisedData}
-        />
+      {cityListData?.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            paddingBottom: "30px",
+          }}
+        >
+          <Typography color="text.secondary" variant="h4">
+            Searched Result
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setCityListData([]);
+              localStorage.removeItem("cityListData");
+            }}
+          >
+            Clear
+          </Button>
+        </div>
       )}
 
-      {/* <div style={{ paddingTop: "5vh" }}>
-        <HorizontalScroller dailyWeatherData={dailyWeatherData} />
-      </div> */}
-      <Grid container spacing={2} style={{ margin: "auto" }}>
+      <Grid
+        container
+        spacing={3}
+        style={{
+          margin: "auto",
+          display: "flex",
+          justifyContent: "space-around",
+        }}
+      >
         {cityListData?.map((city: string) => {
           return (
             <Grid
@@ -217,10 +262,15 @@ const App = () => {
               xs={10}
               sm={8}
               md={5}
-              lg={4}
-              xl={3}
-              style={{ height: "40vh", paddingLeft: "0px" }}
-              sx={{ pl: "20px", pr: "20px" }}
+              lg={5}
+              xl={3.5}
+              style={{
+                height: "40vh",
+                paddingLeft: "0px",
+                paddingTop: "0px",
+                backgroundColor: "#EEEEEE",
+              }}
+              // sx={{ pl: "20px", pr: "20px" }}
             >
               <CityCard city={city} />
             </Grid>
