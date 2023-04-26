@@ -1,4 +1,3 @@
-import * as React from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,8 +23,6 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
     } = event;
     console.log(" value ", value);
     props?.setterFunction(
-      // On autofill we get a stringified value.
-      // typeof value === "string" ? value.split(",") : value
       [...value.split(",")]
     );
   };

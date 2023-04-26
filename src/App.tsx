@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CustomCard from "./components/CustomCard";
 import Header from "./components/Header";
-import HorizontalScroller from "./components/HorizontalScroller";
 import CustomSelect from "./components/CustomSelect";
 import { IdailyWeatherData } from "./utils/type/types";
 import { ISelectedCriteria } from "./utils/type/enum";
@@ -26,15 +25,6 @@ const App = () => {
     ...(JSON.parse(localStorage.getItem("cityListData") as string) ?? []),
   ]);
 
-  // useEffect(() => {
-  //   setCityListData([
-  //     ...(JSON.parse(localStorage.getItem("cityListData") as string) ?? []),
-  //     ...cityListData,
-  //   ]);
-  // }, []);
-
-  console.log("🚀 ~ file: App.tsx:26 ~ App ~ cityListData:", cityListData);
-
   //Debouncing
   useEffect(() => {
     const getData = setTimeout(() => {
@@ -42,8 +32,6 @@ const App = () => {
         searchText !== debouncedSearchText[debouncedSearchText?.length - 1] &&
         setDebouncedSearchText([...debouncedSearchText, searchText]);
     }, 2000);
-
-    console.log("debouncedSearchText", debouncedSearchText);
 
     return () => clearTimeout(getData);
   }, [searchText]);
@@ -65,11 +53,6 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem("cityListData", JSON.stringify([...cityListData]));
   }, [cityListData]);
-
-  console.log(
-    "asdfasdfasdf",
-    JSON.parse(localStorage.getItem("cityListData") as string)
-  );
 
   const daily = [
     "Monday",
@@ -154,27 +137,45 @@ const App = () => {
     setCustomisedData(filterdData?.[0]?.temperature);
   }, [selectedTime, selectedCriteriaData]);
 
+  //creating props
   const createSearchAppBarProps = () => {
     return {
       searchText,
       setSearchText,
     };
   };
-
   const propData = createSearchAppBarProps();
 
   return (
     <div
-      style={{ paddingBottom: "50px", backgroundColor: "#EEEEEE", height: "" }}
+      style={
+        {
+          // paddingBottom: "50px",
+          // border: "1px solid gray",
+          // boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.3)",
+        }
+      }
     >
       <div style={{ paddingBottom: "50px" }}>
         <Header propData={propData} />
-        <h3 style={{ textAlign: "center" }}>Live Data</h3>
+        <Typography
+          color="text.secondary"
+          style={{ textAlign: "center", paddingTop: "15px" }}
+          variant="h4"
+        >
+          Searched Result
+        </Typography>
         <CustomCard
           setDailyWeatherData={setDailyWeatherData}
           dailyWeatherData={dailyWeatherData}
         />
-        <h3 style={{ textAlign: "center" }}>Data On Request</h3>
+        <Typography
+          color="text.secondary"
+          style={{ textAlign: "center", paddingTop: "15px" }}
+          variant="h4"
+        >
+          Get Customised Data
+        </Typography>
         <div style={{ textAlign: "center" }}>
           <CustomSelect
             data={list}
@@ -245,38 +246,44 @@ const App = () => {
           </Button>
         </div>
       )}
-
-      <Grid
-        container
-        spacing={3}
-        style={{
-          margin: "auto",
-          display: "flex",
-          justifyContent: "space-around",
-        }}
-      >
-        {cityListData?.map((city: string) => {
-          return (
-            <Grid
-              item
-              xs={10}
-              sm={8}
-              md={5}
-              lg={5}
-              xl={3.5}
-              style={{
-                height: "40vh",
-                paddingLeft: "0px",
-                paddingTop: "0px",
-                backgroundColor: "#EEEEEE",
-              }}
-              // sx={{ pl: "20px", pr: "20px" }}
-            >
-              <CityCard city={city} />
-            </Grid>
-          );
-        })}
-      </Grid>
+      {cityListData?.length > 0 && (
+        <Grid
+          container
+          spacing={3}
+          style={{
+            margin: "auto",
+            display: "flex",
+            justifyContent: "space-around",
+            backgroundColor: "#FCC8D1",
+            padding: "30px 0px",
+            // border: "1px solid gray",
+            // boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.3)",
+          }}
+        >
+          {cityListData?.map((city: string) => {
+            return (
+              <Grid
+                item
+                xs={10}
+                sm={8}
+                md={5}
+                lg={5}
+                xl={3.5}
+                style={{
+                  height: "38vh",
+                  paddingLeft: "0px",
+                  paddingTop: "0px",
+                  backgroundColor: "#EEEEEE",
+                  marginBottom : '30px'
+                }}
+                // sx={{ pl: "20px", pr: "20px" }}
+              >
+                <CityCard city={city} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      )}
     </div>
   );
 };
