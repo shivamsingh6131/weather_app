@@ -30,7 +30,7 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
     );
   };
 
-  console.log("props asdf", props?.data);
+  console.log("props asdf", props);
 
   // let inpuCategoryHere : string;
   // switch (props?.inputCategory) {
@@ -57,18 +57,22 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
           MenuProps={MenuProps}
         >
           {props?.data?.slice(0, 23)?.map((item: any, index: number) => {
+            console.log("adasdf", item?.time);
             return (
               <MenuItem
                 key={item + index}
                 value={
                   props?.inputCategory === "Select Category"
                     ? item
+                    : props?.inputCategory === "Daily"
+                    ? item?.time
                     : item?.time?.split("T")?.[1]
                 }
-                //   style={getStyles(time, props?.selectedTime, theme)}
               >
                 {props?.inputCategory === "Select Category"
                   ? item
+                  : props?.inputCategory === "Daily"
+                  ? item?.time
                   : item?.time?.split("T")?.[1]}
               </MenuItem>
             );

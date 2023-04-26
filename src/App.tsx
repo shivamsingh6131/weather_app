@@ -13,8 +13,6 @@ enum ISelectedCriteria {
   Weekly = "Weekly",
 }
 
-
-
 const App = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [dailyWeatherData, setDailyWeatherData] = useState([]);
@@ -23,10 +21,15 @@ const App = () => {
     dailyWeatherData
   );
   const [selectedTime, setSelectedTime] = useState<string>("");
+  //for second card
   const [customisedData, setCustomisedData] = useState<number>(0);
+  //for the dorpdown
   const [selectedCriteria, setSelectedCriteria] = useState<string>("");
   const [selectedCriteriaData, setSelectedCriteriaData] = useState<any>([]);
-  console.log("🚀 ~ file: App.tsx:27 ~ App ~ selectedCriteriaData:", selectedCriteria)
+  console.log(
+    "🚀 ~ file: App.tsx:27 ~ App ~ selectedCriteriaData:",
+    selectedCriteria
+  );
 
   const weekly = [
     "Monday",
@@ -37,8 +40,6 @@ const App = () => {
     "Saturday",
     "Sunday",
   ];
-
-
 
   useEffect(() => {
     console.log("this triggered");
@@ -57,7 +58,7 @@ const App = () => {
         let dailyData = dailyWeatherData
           ?.slice(0, 168)
           ?.reduce((last: any, curr: any) => {
-            console.log("🚀 ~ file: App.tsx:55 ~ ?.reduce ~ last:", last)
+            console.log("🚀 ~ file: App.tsx:55 ~ ?.reduce ~ last:", last);
             console.log("curr here", curr);
             count += curr?.temperature;
             index++;
@@ -69,8 +70,18 @@ const App = () => {
             }
             return [...last];
           }, []);
+        // ?.map((item, index) => weekly[index] + ":  " + item + "°C");
         console.log("dailyData here", dailyData);
-        setSelectedCriteriaData([...dailyData]);
+
+        // const dataHere = weekly?.map((item, index) => {
+        //   return { time: item, temperature: dailyData[index] };
+        // });
+
+        setSelectedCriteriaData([
+          ...weekly?.map((item, index) => {
+            return { time: item, temperature: dailyData[index] };
+          }),
+        ]);
         break;
 
       default:
@@ -79,9 +90,13 @@ const App = () => {
   }, [selectedCriteria]);
 
   useEffect(() => {
+    console.log("selectedCriteriaData asdf", selectedCriteriaData);
+
     const filterdData: IdailyWeatherData[] = selectedCriteriaData
       ?.slice(0, 24)
       ?.filter((item: IdailyWeatherData) => item?.time?.includes(selectedTime));
+
+    console.log("filterdData", filterdData);
     setCustomisedData(filterdData?.[0]?.temperature);
   }, [selectedTime, selectedCriteriaData]);
 
@@ -111,7 +126,7 @@ const App = () => {
 
   const propData = createSearchAppBarProps();
 
-  const list = [ "Today", "Tomorrow", "Daily", "Weekly"];
+  const list = ["Today", "Tomorrow", "Daily", "Weekly"];
 
   return (
     <div style={{ paddingBottom: "50px" }}>
@@ -134,8 +149,7 @@ const App = () => {
             data={selectedCriteriaData}
             setVariable={selectedTime}
             setterFunction={setSelectedTime}
-            inputCategory="Hourly"
-            // inputCategory={selectedCriteria?.[0]}
+            inputCategory={selectedCriteria?.[0] === "Daily" ? "Daily" :"Hourly"}
           />
         )}
       </div>
