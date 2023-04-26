@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import CustomTypography from "./CustomTypography";
-import { ICustomCardProps, ICustomProps, Icordinates } from "../utils/types";
+import { ICustomCardProps, ICustomProps, Icordinates } from "../utils/type/types";
 import {
   fetchWeatherData,
   getCurrentLocation,

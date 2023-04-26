@@ -3,35 +3,61 @@ import CustomCard from "./components/CustomCard";
 import Header from "./components/Header";
 import HorizontalScroller from "./components/HorizontalScroller";
 import CustomSelect from "./components/CustomSelect";
-import { IdailyWeatherData } from "./utils/types";
-
-enum ISelectedCriteria {
-  // Hourly = "Hourly",
-  Today = "Today",
-  Tomorrow = "Tomorrow",
-  Daily = "Daily",
-  Weekly = "Weekly",
-}
+import { IdailyWeatherData } from "./utils/type/types";
+import { ISelectedCriteria } from "./utils/type/enum";
+import CityCard from "./components/CityCard";
+import { Grid } from "@mui/material";
+import { fetchWeatherDataForCity } from "./utils/helper";
 
 const App = () => {
+  //header component data
   const [searchText, setSearchText] = useState<string>("");
+  const [debouncedSearchText, setDebouncedSearchText] = useState<any>([]);
+  //handle all the data for weather
   const [dailyWeatherData, setDailyWeatherData] = useState([]);
-  console.log(
-    "🚀 ~ file: App.tsx:19 ~ App ~ dailyWeatherData:",
-    dailyWeatherData
-  );
   const [selectedTime, setSelectedTime] = useState<string>("");
   //for second card
   const [customisedData, setCustomisedData] = useState<number>(0);
   //for the dorpdown
   const [selectedCriteria, setSelectedCriteria] = useState<string>("");
   const [selectedCriteriaData, setSelectedCriteriaData] = useState<any>([]);
-  console.log(
-    "🚀 ~ file: App.tsx:27 ~ App ~ selectedCriteriaData:",
-    selectedCriteria
-  );
+  //city wise data
+  const [cityListData, setCityListData] = useState([]);
+  console.log("🚀 ~ file: App.tsx:26 ~ App ~ cityListData:", cityListData);
 
-  const weekly = [
+  //Debouncing
+  useEffect(() => {
+    const getData = setTimeout(() => {
+      searchText &&
+        searchText !== debouncedSearchText[debouncedSearchText?.length - 1] &&
+        setDebouncedSearchText([...debouncedSearchText, searchText]);
+    }, 2000);
+
+    return () => clearTimeout(getData);
+  }, [searchText]);
+
+  //featch weather for city
+  useEffect(() => {
+    console.log(
+      "debouncedSearchText[debouncedSearchText-1] !== searchText",
+      searchText !== "" &&
+        debouncedSearchText[debouncedSearchText - 1] !== searchText
+    );
+    console.log("🚀 ~ file: App.tsx:42 ~ useEffect ~ searchText:", searchText);
+    console.log(
+      "🚀 ~ file: App.tsx:42 ~ useEffect ~ debouncedSearchText[debouncedSearchText-1]:",
+      debouncedSearchText[debouncedSearchText - 1]
+    );
+    searchText !== "" &&
+      debouncedSearchText[debouncedSearchText - 1] !== searchText &&
+      fetchWeatherDataForCity(
+        debouncedSearchText,
+        cityListData,
+        setCityListData
+      );
+  }, [debouncedSearchText]);
+
+  const daily = [
     "Monday",
     "Tuesday",
     "Wednesday",
@@ -40,9 +66,10 @@ const App = () => {
     "Saturday",
     "Sunday",
   ];
+  const list = ["Today", "Tomorrow", "Daily", "Weekly"];
+  const weekly = ["Week 1", "Week 2"];
 
   useEffect(() => {
-    console.log("this triggered");
     switch (selectedCriteria[0]) {
       case ISelectedCriteria.Today:
         setSelectedCriteriaData([...dailyWeatherData?.slice(0, 24)]);
@@ -58,8 +85,6 @@ const App = () => {
         let dailyData = dailyWeatherData
           ?.slice(0, 168)
           ?.reduce((last: any, curr: any) => {
-            console.log("🚀 ~ file: App.tsx:55 ~ ?.reduce ~ last:", last);
-            console.log("curr here", curr);
             count += curr?.temperature;
             index++;
             if (index === 23) {
@@ -70,16 +95,34 @@ const App = () => {
             }
             return [...last];
           }, []);
-        // ?.map((item, index) => weekly[index] + ":  " + item + "°C");
-        console.log("dailyData here", dailyData);
+        setSelectedCriteriaData([
+          ...daily?.map((item, index) => {
+            return { time: item, temperature: dailyData[index] };
+          }),
+        ]);
+        break;
 
-        // const dataHere = weekly?.map((item, index) => {
-        //   return { time: item, temperature: dailyData[index] };
-        // });
+      case ISelectedCriteria.Weekly:
+        let weeklyIndex: number = 0;
+        let weeklyCount: number = 0;
+
+        let weeklyData = dailyWeatherData
+          ?.slice(0, 384)
+          ?.reduce((last: any, curr: any) => {
+            weeklyCount += curr?.temperature;
+            weeklyIndex++;
+            if (weeklyIndex === 168) {
+              weeklyIndex = 0;
+              const returnData = [...last, (weeklyCount / 168)?.toFixed(2)];
+              weeklyCount = 0;
+              return returnData;
+            }
+            return [...last];
+          }, []);
 
         setSelectedCriteriaData([
           ...weekly?.map((item, index) => {
-            return { time: item, temperature: dailyData[index] };
+            return { time: item, temperature: weeklyData[index] };
           }),
         ]);
         break;
@@ -90,13 +133,10 @@ const App = () => {
   }, [selectedCriteria]);
 
   useEffect(() => {
-    console.log("selectedCriteriaData asdf", selectedCriteriaData);
-
     const filterdData: IdailyWeatherData[] = selectedCriteriaData
       ?.slice(0, 24)
       ?.filter((item: IdailyWeatherData) => item?.time?.includes(selectedTime));
 
-    console.log("filterdData", filterdData);
     setCustomisedData(filterdData?.[0]?.temperature);
   }, [selectedTime, selectedCriteriaData]);
 
@@ -126,8 +166,6 @@ const App = () => {
 
   const propData = createSearchAppBarProps();
 
-  const list = ["Today", "Tomorrow", "Daily", "Weekly"];
-
   return (
     <div style={{ paddingBottom: "50px" }}>
       <Header propData={propData} />
@@ -149,20 +187,46 @@ const App = () => {
             data={selectedCriteriaData}
             setVariable={selectedTime}
             setterFunction={setSelectedTime}
-            inputCategory={selectedCriteria?.[0] === "Daily" ? "Daily" :"Hourly"}
+            inputCategory={
+              selectedCriteria?.[0] === "Daily"
+                ? "Daily"
+                : selectedCriteria?.[0] === "Weekly"
+                ? "Weekly"
+                : "Hourly"
+            }
           />
         )}
       </div>
-      <CustomCard
-        setDailyWeatherData={setDailyWeatherData}
-        dailyWeatherData={selectedCriteriaData}
-        isCustomised={Boolean(customisedData)}
-        customisedData={customisedData}
-      />
+      {selectedCriteria && (
+        <CustomCard
+          setDailyWeatherData={setDailyWeatherData}
+          dailyWeatherData={selectedCriteriaData}
+          isCustomised={Boolean(customisedData)}
+          customisedData={customisedData}
+        />
+      )}
 
       {/* <div style={{ paddingTop: "5vh" }}>
         <HorizontalScroller dailyWeatherData={dailyWeatherData} />
       </div> */}
+      <Grid container spacing={2} style={{ margin: "auto" }}>
+        {cityListData?.map((city: string) => {
+          return (
+            <Grid
+              item
+              xs={10}
+              sm={8}
+              md={5}
+              lg={4}
+              xl={3}
+              style={{ height: "40vh", paddingLeft: "0px" }}
+              sx={{ pl: "20px", pr: "20px" }}
+            >
+              <CityCard city={city} />
+            </Grid>
+          );
+        })}
+      </Grid>
     </div>
   );
 };

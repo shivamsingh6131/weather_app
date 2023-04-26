@@ -1,4 +1,4 @@
-import { Icordinates } from "./types";
+import { Icordinates } from "./type/types";
 
 //fetch city name on the basis of latitude and logitude.
 export const getCityName = async (
@@ -34,13 +34,59 @@ export const fetchWeatherData = async (
       `https://api.open-meteo.com/v1/forecast?latitude=${cordinates?.latitude}&longitude=${cordinates?.longitude}&hourly=temperature_2m&current_weather=true&&forecast_days=16`
     );
     const data = await response.json();
-    console.log("🚀 ~ file: helper.ts:36 ~ data:", data)
     setCurrentWeather({ ...currentWeather, ...data });
-    console.log("🚀 ~ file: helper.ts:39 ~ data:", data)
-    if(setDailyWeatherData){
-        const reformatedData = reformatTimeWiseWeather(data);
-        setDailyWeatherData([...reformatedData])
+    if (setDailyWeatherData) {
+      const reformatedData = reformatTimeWiseWeather(data);
+      setDailyWeatherData([...reformatedData]);
     }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchWeatherDataForCity = async (
+  cityData: [],
+  cityListData: any,
+  setCityListData: any
+) => {
+  try {
+    const currentCity = cityData[cityData.length - 1];
+    console.log("🚀 ~ file: helper.ts:54 ~ currentCity:", currentCity);
+
+    const cityCordinates = await fetch(
+      `https://api.opencagedata.com/geocode/v1/json?key=a47ec1100cf64526b3cf924711e95230&q=${currentCity}`
+    );
+    const cityCordinatesData = await cityCordinates.json();
+    console.log(
+      "🚀 ~ file: helper.ts:60 ~ cityCordinatesData:",
+      cityCordinatesData
+    );
+    const latitude = cityCordinatesData?.results?.[0]?.geometry?.lat;
+    const longitude = cityCordinatesData?.results?.[0]?.geometry?.lng;
+    const Country = cityCordinatesData?.results?.[0]?.components?.country;
+    const stateDistrict =
+      cityCordinatesData?.results?.[0]?.components?.state_district;
+
+    const weatherResponse = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&current_weather=true&&forecast_days=1`
+    );
+    const weatherResponsData = await weatherResponse.json();
+    const temperature = weatherResponsData?.current_weather?.temperature;
+
+    console.log("🚀 ~ file: helper.ts:67 ~ data:", weatherResponsData);
+
+    const prepareCityData = {
+      Country,
+      stateDistrict,
+      temperature,
+      longitude,
+      latitude,
+      currentCity,
+    };
+    setCityListData([...cityListData, prepareCityData]);
+    console.log("🚀 ~ file: helper.ts:75 ~ prepareCityData:", prepareCityData);
+
+    // setCityListData([...cityListData, data]);
   } catch (error) {
     console.log(error);
   }
@@ -70,7 +116,6 @@ export const getCurrentLocation = (
 
 //reformat data
 export const reformatTimeWiseWeather = (weather: any) => {
-  console.log("🚀 ~ file: helper.ts:68 ~ reformatTimeWiseWeather ~ weather:", weather)
   let counterIndex: number = 0;
   return weather?.hourly?.temperature_2m?.reduce(
     (last: number[], cur: number) => {

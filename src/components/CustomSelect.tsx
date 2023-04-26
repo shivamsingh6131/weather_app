@@ -4,7 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { IMultipleSelectProps } from "../utils/types";
+import { IMultipleSelectProps } from "../utils/type/types";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -30,17 +30,7 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
     );
   };
 
-  console.log("props asdf", props);
-
-  // let inpuCategoryHere : string;
-  // switch (props?.inputCategory) {
-  //   case ISelectedCriteria.Today:
-  //     inpuCategoryHere = ISelectedCriteria.Hourly;
-  //     break;
-
-  //   default:
-  //     break;
-  // }
+  console.log("props asdf", props?.inputCategory);
 
   return (
     <div>
@@ -64,14 +54,14 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
                 value={
                   props?.inputCategory === "Select Category"
                     ? item
-                    : props?.inputCategory === "Daily"
+                    : props?.inputCategory === "Daily"|| props?.inputCategory === "Weekly"
                     ? item?.time
                     : item?.time?.split("T")?.[1]
                 }
               >
                 {props?.inputCategory === "Select Category"
                   ? item
-                  : props?.inputCategory === "Daily"
+                  : props?.inputCategory === "Daily" || props?.inputCategory === "Weekly"
                   ? item?.time
                   : item?.time?.split("T")?.[1]}
               </MenuItem>

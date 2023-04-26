@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { ICustomProps } from "../utils/types";
+import { ICustomProps } from "../utils/type/types";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,7 +58,6 @@ export default function Header(props: ICustomProps) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: "#FF6969" }}>
         <Toolbar>
-        
           <Typography
             variant="h6"
             noWrap
@@ -75,7 +74,12 @@ export default function Header(props: ICustomProps) {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               value={props?.propData?.searchText}
-              onChange={(e) => props?.propData?.setSearchText(e?.target?.value)}
+              onChange={(e) =>props?.propData?.setSearchText(e?.target?.value)
+                // setTimeout(() => {
+                //   props?.propData?.setSearchText(e?.target?.value)
+                //   return () => clearTimeout(props?.propData?.setSearchText(e?.target?.value))
+                // }, 2000)
+              }
             />
           </Search>
         </Toolbar>

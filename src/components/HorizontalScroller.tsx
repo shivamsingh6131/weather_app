@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import SliderCard from "./SliderCard";
-import { IHorizontalScroller, IdailyWeatherData } from "../utils/types";
+import { IHorizontalScroller, IdailyWeatherData } from "../utils/type/types";
 
 const HorizontalScroller = (props: IHorizontalScroller) => {
   console.log(
