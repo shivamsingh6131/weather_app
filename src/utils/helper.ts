@@ -31,7 +31,7 @@ export const fetchWeatherData = async (
 ) => {
   try {
     const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${cordinates?.latitude}&longitude=${cordinates?.longitude}&hourly=temperature_2m&current_weather=true&&forecast_days=3`
+      `https://api.open-meteo.com/v1/forecast?latitude=${cordinates?.latitude}&longitude=${cordinates?.longitude}&hourly=temperature_2m&current_weather=true&&forecast_days=16`
     );
     const data = await response.json();
     console.log("🚀 ~ file: helper.ts:36 ~ data:", data)

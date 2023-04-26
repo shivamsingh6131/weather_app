@@ -22,13 +22,25 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
     const {
       target: { value },
     } = event;
+    console.log(" value ", value);
     props?.setterFunction(
       // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
+      // typeof value === "string" ? value.split(",") : value
+      [...value.split(",")]
     );
   };
 
   console.log("props asdf", props?.data);
+
+  // let inpuCategoryHere : string;
+  // switch (props?.inputCategory) {
+  //   case ISelectedCriteria.Today:
+  //     inpuCategoryHere = ISelectedCriteria.Hourly;
+  //     break;
+
+  //   default:
+  //     break;
+  // }
 
   return (
     <div>
@@ -45,24 +57,21 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
           MenuProps={MenuProps}
         >
           {props?.data?.slice(0, 23)?.map((item: any, index: number) => {
-            console.log("item here" , item);
-            // console.log("item here" , props?.inputCategory === "Select Category");
-
-            return(
-                <MenuItem
-                  key={item + index}
-                  value={
-                    props?.inputCategory === "Select Category"
-                      ? item
-                      : item?.time?.split("T")?.[1]
-                  }
-                  //   style={getStyles(time, props?.selectedTime, theme)}
-                >
-                  {props?.inputCategory === "Select Category"
-                      ? item
-                      : item?.time?.split("T")?.[1]}
-                </MenuItem>
-              )
+            return (
+              <MenuItem
+                key={item + index}
+                value={
+                  props?.inputCategory === "Select Category"
+                    ? item
+                    : item?.time?.split("T")?.[1]
+                }
+                //   style={getStyles(time, props?.selectedTime, theme)}
+              >
+                {props?.inputCategory === "Select Category"
+                  ? item
+                  : item?.time?.split("T")?.[1]}
+              </MenuItem>
+            );
           })}
         </Select>
       </FormControl>
