@@ -54,15 +54,7 @@ const App = () => {
     localStorage.setItem("cityListData", JSON.stringify([...cityListData]));
   }, [cityListData]);
 
-  const daily = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+  //for dropdown list
   const list = ["Today", "Tomorrow", "Daily", "Weekly"];
   const weekly = ["Week 1", "Week 2"];
 
@@ -78,13 +70,15 @@ const App = () => {
       case ISelectedCriteria.Daily:
         let index: number = 0;
         let count: number = 0;
+        let date: string[] = [];
 
         let dailyData = dailyWeatherData
-          ?.slice(0, 168)
+          ?.slice(0, 360)
           ?.reduce((last: any, curr: any) => {
             count += curr?.temperature;
             index++;
             if (index === 23) {
+              date.push(curr?.time?.split("T")?.[0]);
               index = 0;
               const returnData = [...last, (count / 24)?.toFixed(2)];
               count = 0;
@@ -93,7 +87,7 @@ const App = () => {
             return [...last];
           }, []);
         setSelectedCriteriaData([
-          ...daily?.map((item, index) => {
+          ...date?.map((item, index) => {
             return { time: item, temperature: dailyData[index] };
           }),
         ]);
@@ -148,13 +142,6 @@ const App = () => {
 
   return (
     <div
-      style={
-        {
-          // paddingBottom: "50px",
-          // border: "1px solid gray",
-          // boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.3)",
-        }
-      }
     >
       <div style={{ paddingBottom: "50px" }}>
         <Header propData={propData} />
@@ -274,9 +261,8 @@ const App = () => {
                   paddingLeft: "0px",
                   paddingTop: "0px",
                   backgroundColor: "#EEEEEE",
-                  marginBottom : '30px'
+                  marginBottom: "30px",
                 }}
-                // sx={{ pl: "20px", pr: "20px" }}
               >
                 <CityCard city={city} />
               </Grid>

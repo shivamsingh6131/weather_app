@@ -7,6 +7,7 @@ export const getCityName = async (
   cityName: any,
   setCityName: any
 ) => {
+  console.log("this here", latitude, longitude, cityName);
   try {
     // const response = await fetch(
     //   `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
@@ -67,7 +68,10 @@ export const fetchWeatherDataForCity = async (
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&current_weather=true&&forecast_days=1`
     );
     const weatherResponsData = await weatherResponse.json();
-    console.log("🚀 ~ file: helper.ts:70 ~ weatherResponsData:", weatherResponsData)
+    console.log(
+      "🚀 ~ file: helper.ts:70 ~ weatherResponsData:",
+      weatherResponsData
+    );
 
     //if error in api response
     if (weatherResponsData?.error) return setCityListData([...cityListData]);
@@ -89,7 +93,7 @@ export const fetchWeatherDataForCity = async (
       return [...last, curr];
     }, []);
 
-    console.log("prepareCityData" ,prepareCityData);
+    console.log("prepareCityData", prepareCityData);
 
     setCityListData([...removeSameObjects, prepareCityData]);
   } catch (error) {
