@@ -3,7 +3,6 @@ import { Dna } from "react-loader-spinner";
 import { ICustomTypographyProps } from "../utils/type/types";
 
 const CustomTypography = (props: ICustomTypographyProps) => {
-  console.log("props?.condition" , props?.condition);
   return (
     <>
       {props?.condition ? (

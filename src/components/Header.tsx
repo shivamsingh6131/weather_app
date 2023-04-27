@@ -53,8 +53,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header(props: ICustomProps) {
-  console.log("props", props);
-  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: "#BA90C6" }}>

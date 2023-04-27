@@ -18,9 +18,10 @@ import { list, weekly } from "../utils";
 const Homepage = () => {
   //header component data
   const [searchText, setSearchText] = useState<string>("");
-  const [debouncedSearchText, setDebouncedSearchText] = useState<any>([]);
+  const [debouncedSearchText, setDebouncedSearchText] = useState<string[]>([]);
   //handle all the data for weather
   const [dailyWeatherData, setDailyWeatherData] = useState([]);
+  console.log("🚀 ~ file: Homepage.tsx:24 ~ Homepage ~ dailyWeatherData:", dailyWeatherData)
   const [selectedTime, setSelectedTime] = useState<string>("");
   //for second card
   const [customisedData, setCustomisedData] = useState<number>(0);
@@ -47,7 +48,7 @@ const Homepage = () => {
         setLoader(false);
       }
     }, 2000);
-
+    //clearing event (junk event)
     return () => clearTimeout(getData);
   }, [searchText]);
 
@@ -120,7 +121,6 @@ const Homepage = () => {
   };
   const propData = createSearchAppBarProps();
 
-  console.log("selectedCriteria", selectedCriteria);
   return (
     <div style={{ overflowX: "hidden" }}>
       <div style={{ paddingBottom: "50px" }}>
@@ -130,7 +130,7 @@ const Homepage = () => {
           style={{ textAlign: "center", paddingTop: "15px" }}
           variant="h4"
         >
-          Searched Result
+          Live Data
         </Typography>
         <CustomCard
           setDailyWeatherData={setDailyWeatherData}
