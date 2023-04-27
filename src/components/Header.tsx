@@ -57,7 +57,7 @@ export default function Header(props: ICustomProps) {
   
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{ backgroundColor: "#FF6969" }}>
+      <AppBar position="static" style={{ backgroundColor: "#BA90C6" }}>
         <Toolbar>
           <Typography
             variant="h6"

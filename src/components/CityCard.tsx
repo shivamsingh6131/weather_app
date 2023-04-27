@@ -8,7 +8,7 @@ import CustomTypography from "./CustomTypography";
 function CityCard(props: any) {
   return (
     <div style={{ textAlign: "center" }}>
-      <Card sx={{ minWidth: 275, backgroundColor: "#dae3fd", height: "38vh" }}>
+      <Card sx={{ minWidth: 275, backgroundColor: "#BA90C6", height: "38vh" }}>
         <CardContent>
           <Box
             display={"flex"}

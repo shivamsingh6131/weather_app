@@ -43,3 +43,17 @@ export interface IMultipleSelectProps {
   inputCategory?: string,
   filteringCriteria?:string,
 }
+export interface ICityCardContainer {
+  cityListData : any,
+  setCityListData : any,
+}
+export interface ICustomisedCardContainerProps {
+  selectedCriteria : any,
+  setSelectedCriteria : any,
+  selectedCriteriaData : any,
+  selectedTime : any,
+  setSelectedTime : any,
+  setDailyWeatherData : any,
+  customisedData : any,
+  list:any,
+}

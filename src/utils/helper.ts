@@ -1,4 +1,4 @@
-import { Icordinates } from "./type/types";
+import { Icordinates, IdailyWeatherData } from "./type/types";
 
 //fetch city name on the basis of latitude and logitude.
 export const getCityName = async (
@@ -74,7 +74,7 @@ export const fetchWeatherDataForCity = async (
 
     //if error in api response
     if (weatherResponsData?.error) {
-      setLoader(false)
+      setLoader(false);
       return setCityListData([...cityListData]);
     }
 
@@ -92,11 +92,12 @@ export const fetchWeatherDataForCity = async (
       if (curr?.currentCity === currentCity) {
         return [...last];
       }
+      setLoader(false);
       return [...last, curr];
     }, []);
 
     setCityListData([...removeSameObjects, prepareCityData]);
-    setLoader(false)
+    setLoader(false);
   } catch (error) {
     console.log(error);
   }
@@ -137,4 +138,63 @@ export const reformatTimeWiseWeather = (weather: any) => {
     },
     []
   );
+};
+
+//evaluates today data and returns
+export const evaluateTodayAndTomorrowData = (
+  dailyWeatherData: any,
+  sliceStart: number,
+  sliceEnd: number
+) => {
+  return [...dailyWeatherData?.slice(sliceStart, sliceEnd)]?.map(
+    (item: any) => {
+      return {
+        time: item?.time?.split("T")?.[1],
+        temperature: item?.temperature,
+      };
+    }
+  );
+};
+//evaluates daily bassis data and returns
+export const evaluateDailyBasedData = (dailyWeatherData: any) => {
+  let index: number = 0;
+  let count: number = 0;
+  let date: string[] = [];
+
+  const dailyWeatherDataUpdated = dailyWeatherData
+    ?.slice(0, 360)
+    ?.reduce((last: any, curr: any) => {
+      count += curr?.temperature;
+      index++;
+      if (index === 23) {
+        date.push(curr?.time?.split("T")?.[0]);
+        index = 0;
+        const returnData = [...last, (count / 24)?.toFixed(2)];
+        count = 0;
+        return returnData;
+      }
+      return [...last];
+    }, []);
+
+  return {
+    dailyData: dailyWeatherDataUpdated,
+    date,
+  };
+};
+//evaluates daily bassis data and returns
+export const evaluateWeeklyBasedData = (dailyWeatherData: any) => {
+  let weeklyIndex: number = 0;
+  let weeklyCount: number = 0;
+
+  return dailyWeatherData?.slice(0, 384)?.reduce((last: any, curr: any) => {
+    weeklyCount += curr?.temperature;
+    weeklyIndex++;
+    if (weeklyIndex === 168) {
+      weeklyIndex = 0;
+      const returnData = [...last, (weeklyCount / 168)?.toFixed(2)];
+      weeklyCount = 0;
+      return returnData;
+    }
+    return [...last];
+  }, []);
 };
