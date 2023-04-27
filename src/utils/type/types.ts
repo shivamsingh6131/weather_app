@@ -1,10 +1,10 @@
 export interface ICustomTypographyProps {
   component?: React.Component;
   condition: boolean;
-  typegraphyData: any;
   temperatureData?: string;
-  typegraphystyles?: any;
-  additionalProps?: any;
+  typegraphystyles?: any; //styles
+  additionalProps?: any; //styles
+  typegraphyData: string | number;
   loaderHeightWidth?: string;
 }
 
@@ -13,7 +13,7 @@ export interface Icordinates {
   longitude: number;
 }
 
-export interface ICustomProps {
+export interface ICustomHeaderProps {
   propData: IPropData;
 }
 export interface IPropData {
@@ -23,10 +23,11 @@ export interface IPropData {
 
 export interface ICustomCardProps {
   setDailyWeatherData: any;
-  dailyWeatherData: any;
+  dailyWeatherData: IdailyWeatherData[];
   isCustomised?: boolean;
-  customisedData?: any;
+  customisedData?: string;
 }
+
 
 export interface IdailyWeatherData {
   time: string;
@@ -35,24 +36,24 @@ export interface IdailyWeatherData {
 
 export interface IMultipleSelectProps {
   setVariable: string;
-  setterFunction: any;
-  data: unknown[];
+  data: IdailyWeatherData[] | string[];
   inputCategory?: string;
   filteringCriteria?: string;
+  setterFunction: any;
 }
 export interface ICityCardContainer {
   cityListData: ICityListData[];
   setCityListData: any;
 }
 export interface ICustomisedCardContainerProps {
-  selectedCriteria: any;
+  selectedCriteria: string;
+  selectedCriteriaData: IdailyWeatherData[];
+  selectedTime: string;
+  customisedData: string | number;
+  list: string[];
   setSelectedCriteria: any;
-  selectedCriteriaData: any;
-  selectedTime: any;
   setSelectedTime: any;
   setDailyWeatherData: any;
-  customisedData: any;
-  list: any;
 }
 
 export interface ICityCardProps {

@@ -24,7 +24,7 @@ function CityCard(props: ICityCardProps) {
             />
             <CustomTypography
               condition={true}
-              typegraphyData={props?.city?.temperature}
+              typegraphyData={props?.city?.temperature as string | number}
               temperatureData={"°C"}
               additionalProps={"gutterBottom"}
               typegraphystyles={{ fontSize: 36 }}

@@ -65,7 +65,7 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
           setDailyWeatherData={setDailyWeatherData}
           dailyWeatherData={selectedCriteriaData}
           isCustomised={Boolean(customisedData)}
-          customisedData={customisedData}
+          customisedData={customisedData as string}
         />
       )}
     </div>

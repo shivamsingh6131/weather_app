@@ -1,5 +1,4 @@
 import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -21,7 +20,7 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
     const {
       target: { value },
     } = event;
-    props?.setterFunction([...value.split(",")]);
+    props?.setterFunction(value);
   };
 
   return (
