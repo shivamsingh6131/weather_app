@@ -4,8 +4,9 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import CustomTypography from "./CustomTypography";
+import { ICityCardProps } from "../utils/type";
 
-function CityCard(props: any) {
+function CityCard(props: ICityCardProps) {
   return (
     <div style={{ textAlign: "center" }}>
       <Card sx={{ minWidth: 275, backgroundColor: "#BA90C6", height: "auto" }}>

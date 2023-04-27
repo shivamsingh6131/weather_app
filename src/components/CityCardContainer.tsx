@@ -1,5 +1,5 @@
 import React from "react";
-import { ICityCardContainer } from "../utils/type/types";
+import { ICity, ICityCardContainer } from "../utils/type/types";
 import { Button, Grid, Typography } from "@mui/material";
 import CityCard from "./CityCard";
 
@@ -45,7 +45,7 @@ const CityCardContainer = (props : ICityCardContainer) => {
               // boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.3)",
             }}
           >
-            {props?.cityListData?.map((city: string) => {
+            {props?.cityListData?.map((city: ICity) => {
               return (
                 <Grid
                   item

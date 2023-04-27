@@ -29,28 +29,50 @@ export interface ICustomCardProps {
 }
 
 export interface IdailyWeatherData {
-  time : string;
-  temperature : number
+  time: string;
+  temperature: number;
 }
 
 export interface IMultipleSelectProps {
-  setVariable : string,
-  setterFunction : any,
-  data : unknown[],
-  inputCategory?: string,
-  filteringCriteria?:string,
+  setVariable: string;
+  setterFunction: any;
+  data: unknown[];
+  inputCategory?: string;
+  filteringCriteria?: string;
 }
 export interface ICityCardContainer {
-  cityListData : any,
-  setCityListData : any,
+  cityListData: ICityListData[];
+  setCityListData: any;
 }
 export interface ICustomisedCardContainerProps {
-  selectedCriteria : any,
-  setSelectedCriteria : any,
-  selectedCriteriaData : any,
-  selectedTime : any,
-  setSelectedTime : any,
-  setDailyWeatherData : any,
-  customisedData : any,
-  list:any,
+  selectedCriteria: any;
+  setSelectedCriteria: any;
+  selectedCriteriaData: any;
+  selectedTime: any;
+  setSelectedTime: any;
+  setDailyWeatherData: any;
+  customisedData: any;
+  list: any;
+}
+
+export interface ICityCardProps {
+  city: ICity;
+}
+
+export interface ICity {
+  currentCity?: string;
+  temperature?: number;
+  latitude?: number;
+  longitude?: number;
+  stateDistrict?: string;
+  Country?: string;
+}
+
+export interface ICityListData {
+  Country: string;
+  currentCity: string;
+  latitude: number;
+  longitude: number;
+  stateDistrict: string | any;
+  temperature: 34.2;
 }

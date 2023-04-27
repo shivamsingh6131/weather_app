@@ -13,6 +13,7 @@ import {
 } from "../utils/helper";
 
 function CustomCard(props: ICustomCardProps) {
+  console.log("🚀 ~ file: CustomCard.tsx:16 ~ CustomCard ~ props:", props)
   const [cordinates, setCordinates] = useState<Icordinates>({
     latitude: 0,
     longitude: 0,
