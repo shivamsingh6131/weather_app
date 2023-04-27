@@ -21,33 +21,37 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
     const {
       target: { value },
     } = event;
-    console.log(" value ", value);
     props?.setterFunction([...value.split(",")]);
   };
 
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-name-label">
+        {/* <InputLabel id="demo-multiple-name-label">
           {props?.filteringCriteria}
-        </InputLabel>
+        </InputLabel> */}
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           value={props?.setVariable}
           onChange={handleChange}
-          input={<OutlinedInput label="Name" />}
+          input={<OutlinedInput />}
+          displayEmpty
           MenuProps={MenuProps}
         >
+          <MenuItem disabled value=""><em>{props?.filteringCriteria}</em></MenuItem>
           {props?.data?.slice(0, 23)?.map((item: any, index: number) => {
-            console.log("item here here", item);
             return (
-              <MenuItem
-                key={item + index}
-                value={props?.inputCategory === "Criteria" ? item : item?.time}
-              >
-                {props?.inputCategory === "Criteria" ? item : item?.time}
-              </MenuItem>
+        
+                <MenuItem
+                  key={item + index}
+                  value={
+                    props?.inputCategory === "Criteria" ? item : item?.time
+                  }
+                >
+                  {props?.inputCategory === "Criteria" ? item : item?.time}
+                </MenuItem>
+    
             );
           })}
         </Select>

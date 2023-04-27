@@ -7,7 +7,6 @@ export const getCityName = async (
   cityName: any,
   setCityName: any
 ) => {
-  console.log("this here", latitude, longitude, cityName);
   try {
     // const response = await fetch(
     //   `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
@@ -16,7 +15,6 @@ export const getCityName = async (
       `https://api.opencagedata.com/geocode/v1/json?key=a47ec1100cf64526b3cf924711e95230&q=${latitude}%2C${longitude}&pretty=1`
     );
     const data = await response.json();
-    console.log("🚀 ~ file: helper.ts:18 ~ data:", data);
     setCityName({ ...cityName, ...data });
   } catch (error) {
     console.log(error);
@@ -47,7 +45,7 @@ export const fetchWeatherData = async (
 
 //fetch city lat & lon and after that fetch wetather data
 export const fetchWeatherDataForCity = async (
-  cityData: [],
+  cityData: string[],
   cityListData: any,
   setCityListData: any,
   setLoader: any
@@ -87,7 +85,6 @@ export const fetchWeatherDataForCity = async (
       latitude,
       currentCity,
     };
-    console.log("here here-------");
     //to fix multiple same city card.
     const removeSameObjects = cityListData?.reduce((last: any, curr: any) => {
       if (curr?.currentCity === currentCity) {

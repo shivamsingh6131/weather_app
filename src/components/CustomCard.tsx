@@ -34,8 +34,6 @@ function CustomCard(props: ICustomCardProps) {
       );
   }, [cordinates]);
 
-  console.log("props?.customisedData", props?.customisedData);
-
   return (
     <div style={{ textAlign: "center" }}>
       <Grid container spacing={2} style={{ margin: "auto" }}>
@@ -46,7 +44,7 @@ function CustomCard(props: ICustomCardProps) {
           md={3.5}
           lg={4}
           xl={4.5}
-          style={{ height: "40vh" }}
+          style={{ height: "auto" }}
         ></Grid>
         <Grid
           item
@@ -55,11 +53,11 @@ function CustomCard(props: ICustomCardProps) {
           md={5}
           lg={4}
           xl={3}
-          style={{ height: "40vh", paddingLeft: "0px" }}
+          style={{ height: "auto", paddingLeft: "0px" }}
           sx={{ pl: 0 }}
         >
           <Card
-            sx={{ minWidth: 275, backgroundColor: "#dae3fd", height: "38vh" }}
+            sx={{ minWidth: 275, backgroundColor: "#dae3fd", height: "auto" }}
           >
             <CardContent>
               <Box
@@ -132,7 +130,7 @@ function CustomCard(props: ICustomCardProps) {
           md={3.5}
           lg={4}
           xl={4.5}
-          style={{ height: "40vh" }}
+          style={{ height: "auto" }}
         ></Grid>
       </Grid>
     </div>

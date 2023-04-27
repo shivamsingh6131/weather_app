@@ -11,15 +11,17 @@ const CityCardContainer = (props : ICityCardContainer) => {
           <div
             style={{
               display: "flex",
-              justifyContent: "space-evenly",
+              justifyContent: "center",
               paddingBottom: "30px",
+              flexWrap: "wrap"
             }}
           >
-            <Typography color="text.secondary" variant="h4">
+            <Typography color="text.secondary" variant="h4" textAlign="center" padding="0px 15px">
               Searched Result
             </Typography>
             <Button
               variant="outlined"
+              style={{padding : "0px 15px" , height: "56px"}}
               onClick={() => {
                 props?.setCityListData([]);
                 localStorage.removeItem("cityListData");
@@ -53,7 +55,7 @@ const CityCardContainer = (props : ICityCardContainer) => {
                   lg={5}
                   xl={3.5}
                   style={{
-                    height: "38vh",
+                    height: "auto",
                     paddingLeft: "0px",
                     paddingTop: "0px",
                     backgroundColor: "#EEEEEE",
