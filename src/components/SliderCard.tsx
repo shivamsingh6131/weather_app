@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import CustomTypography from "./CustomTypography";
-import { IdailyWeatherData } from "../utils/types";
+import { IdailyWeatherData } from "../utils/type/types";
 
 
 function SliderCard(props: IdailyWeatherData) {

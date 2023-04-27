@@ -1,10 +1,9 @@
-import * as React from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { IMultipleSelectProps } from "../utils/types";
+import { IMultipleSelectProps } from "../utils/type/types";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -23,30 +22,14 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
       target: { value },
     } = event;
     console.log(" value ", value);
-    props?.setterFunction(
-      // On autofill we get a stringified value.
-      // typeof value === "string" ? value.split(",") : value
-      [...value.split(",")]
-    );
+    props?.setterFunction([...value.split(",")]);
   };
-
-  console.log("props asdf", props?.data);
-
-  // let inpuCategoryHere : string;
-  // switch (props?.inputCategory) {
-  //   case ISelectedCriteria.Today:
-  //     inpuCategoryHere = ISelectedCriteria.Hourly;
-  //     break;
-
-  //   default:
-  //     break;
-  // }
 
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id="demo-multiple-name-label">
-          {props?.inputCategory}
+          {props?.filteringCriteria}
         </InputLabel>
         <Select
           labelId="demo-multiple-name-label"
@@ -57,19 +40,13 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
           MenuProps={MenuProps}
         >
           {props?.data?.slice(0, 23)?.map((item: any, index: number) => {
+            console.log("item here here", item);
             return (
               <MenuItem
                 key={item + index}
-                value={
-                  props?.inputCategory === "Select Category"
-                    ? item
-                    : item?.time?.split("T")?.[1]
-                }
-                //   style={getStyles(time, props?.selectedTime, theme)}
+                value={props?.inputCategory === "Criteria" ? item : item?.time}
               >
-                {props?.inputCategory === "Select Category"
-                  ? item
-                  : item?.time?.split("T")?.[1]}
+                {props?.inputCategory === "Criteria" ? item : item?.time}
               </MenuItem>
             );
           })}
