@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import CityCard from "./CityCard";
-import { cityCardPropsMock } from "../utils/mock";
+import { cityCardPropsMock } from "../../utils/mock";
+import CityCard from "../../components/CityCard";
 
 test("it should render cityCard component without crashing and appropriate data", async () => {
   render(<CityCard {...cityCardPropsMock} />);

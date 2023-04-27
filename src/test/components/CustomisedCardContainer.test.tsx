@@ -1,7 +1,7 @@
 import {  render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { customisedCardComponent } from "../utils/mock/CustomisedCardContainer";
-import CustomisedCardContainer from "./CustomisedCardContainer";
+import CustomisedCardContainer from "../../components/CustomisedCardContainer";
+import { customisedCardComponent } from "../../utils/mock/CustomisedCardContainer";
 
 beforeEach(() => {
   const mockGeolocation = {

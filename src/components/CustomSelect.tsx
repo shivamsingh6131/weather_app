@@ -15,7 +15,8 @@ const MenuProps = {
   },
 };
 
-export default function MultipleSelect(props: IMultipleSelectProps) {
+const CustomSelect = (props: IMultipleSelectProps) => {
+  console.log("🚀 ~ file: CustomSelect.tsx:19 ~ MultipleSelect ~ props:", props)
   const handleChange = (event: any) => {
     const {
       target: { value },
@@ -58,3 +59,5 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
     </div>
   );
 }
+
+export default CustomSelect;

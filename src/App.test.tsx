@@ -29,6 +29,4 @@ test("it should render App and it's internal components", async () => {
   expect(await screen.findByText('Live Data')).toBeInTheDocument();
   expect(await screen.findByText('Get Customised Data')).toBeInTheDocument();
   expect(await screen.findByText('Criteria')).toBeInTheDocument();
-
-screen.debug(undefined , 300000)
 });

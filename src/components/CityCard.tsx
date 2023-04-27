@@ -58,7 +58,7 @@ function CityCard(props: ICityCardProps) {
           />
           <CustomTypography
             condition={true}
-            typegraphyData={props?.city?.stateDistrict ?? ""}
+            typegraphyData={props?.city?.stateDistrict ?? "no district found"}
             typegraphystyles={{ mb: 1.5, fontSize: 16 }}
             loaderHeightWidth={"50"}
           />

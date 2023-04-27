@@ -1,8 +1,7 @@
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
-
-import CustomCard from "./CustomCard";
-import { customCardPropsMock } from "../utils/mock/customCard";
+import { customCardPropsMock } from "../../utils/mock/customCard";
+import CustomCard from "../../components/CustomCard";
 
 beforeEach(() => {
   const mockGeolocation = {
