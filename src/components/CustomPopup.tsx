@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Grid } from "react-loader-spinner";
 
 const CustomPopup = () => {

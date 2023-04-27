@@ -13,6 +13,7 @@ import CustomCard from "../components/CustomCard";
 import CustomisedCardContainer from "../components/CustomisedCardContainer";
 import CustomPopup from "../components/CustomPopup";
 import CityCardContainer from "../components/CityCardContainer";
+import { list, weekly } from "../utils";
 
 const Homepage = () => {
   //header component data
@@ -32,7 +33,6 @@ const Homepage = () => {
   ]);
   //loader
   const [loader, setLoader] = useState<boolean>(false);
-  console.log("🚀 ~ file: App.tsx:29 ~ App ~ loader:", loader);
 
   //Debouncing
   useEffect(() => {
@@ -43,6 +43,8 @@ const Homepage = () => {
         searchText !== debouncedSearchText[debouncedSearchText?.length - 1]
       ) {
         setDebouncedSearchText([...debouncedSearchText, searchText]);
+      } else {
+        setLoader(false);
       }
     }, 2000);
 
@@ -51,24 +53,20 @@ const Homepage = () => {
 
   //featch weather for city
   useEffect(() => {
-    searchText !== "" &&
-      debouncedSearchText?.includes(searchText) &&
+    if (searchText !== "" && debouncedSearchText?.includes(searchText)) {
       fetchWeatherDataForCity(
         debouncedSearchText,
         cityListData,
         setCityListData,
         setLoader
       );
+    }
   }, [debouncedSearchText]);
 
   // update localstorage
   useEffect(() => {
     localStorage.setItem("cityListData", JSON.stringify([...cityListData]));
   }, [cityListData]);
-
-  //for dropdown list
-  const list = ["Today", "Tomorrow", "Daily", "Weekly"];
-  const weekly = ["Week 1", "Week 2"];
 
   //to create and udpate the second customSelect data.
   useEffect(() => {

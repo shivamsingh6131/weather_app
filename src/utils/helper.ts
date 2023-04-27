@@ -87,6 +87,7 @@ export const fetchWeatherDataForCity = async (
       latitude,
       currentCity,
     };
+    console.log("here here-------");
     //to fix multiple same city card.
     const removeSameObjects = cityListData?.reduce((last: any, curr: any) => {
       if (curr?.currentCity === currentCity) {

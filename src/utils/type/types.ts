@@ -27,9 +27,6 @@ export interface ICustomCardProps {
   isCustomised?: boolean;
   customisedData?: any;
 }
-export interface IHorizontalScroller {
-  dailyWeatherData: any;
-}
 
 export interface IdailyWeatherData {
   time : string;
