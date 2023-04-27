@@ -41,4 +41,5 @@ export interface IMultipleSelectProps {
   setterFunction : any,
   data : unknown[],
   inputCategory?: string,
+  filteringCriteria?:string,
 }

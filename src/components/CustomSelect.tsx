@@ -22,18 +22,14 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
       target: { value },
     } = event;
     console.log(" value ", value);
-    props?.setterFunction(
-      [...value.split(",")]
-    );
+    props?.setterFunction([...value.split(",")]);
   };
-
-  console.log("props asdf", props?.inputCategory);
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }} >
+      <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id="demo-multiple-name-label">
-          {props?.inputCategory}
+          {props?.filteringCriteria}
         </InputLabel>
         <Select
           labelId="demo-multiple-name-label"
@@ -44,23 +40,13 @@ export default function MultipleSelect(props: IMultipleSelectProps) {
           MenuProps={MenuProps}
         >
           {props?.data?.slice(0, 23)?.map((item: any, index: number) => {
-            console.log("adasdf", item?.time);
+            console.log("item here here", item);
             return (
               <MenuItem
                 key={item + index}
-                value={
-                  props?.inputCategory === "Criteria"
-                    ? item
-                    : props?.inputCategory === "Daily"|| props?.inputCategory === "Weekly"
-                    ? item?.time
-                    : item?.time?.split("T")?.[1]
-                }
+                value={props?.inputCategory === "Criteria" ? item : item?.time}
               >
-                {props?.inputCategory === "Criteria"
-                  ? item
-                  : props?.inputCategory === "Daily" || props?.inputCategory === "Weekly"
-                  ? item?.time
-                  : item?.time?.split("T")?.[1]}
+                {props?.inputCategory === "Criteria" ? item : item?.time}
               </MenuItem>
             );
           })}

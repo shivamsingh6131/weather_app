@@ -7,6 +7,7 @@ import { ISelectedCriteria } from "./utils/type/enum";
 import CityCard from "./components/CityCard";
 import { Button, Grid, Typography } from "@mui/material";
 import { fetchWeatherDataForCity } from "./utils/helper";
+import CustomPopup from "./components/CustomPopup";
 
 const App = () => {
   //header component data
@@ -24,13 +25,21 @@ const App = () => {
   const [cityListData, setCityListData] = useState<any>([
     ...(JSON.parse(localStorage.getItem("cityListData") as string) ?? []),
   ]);
+  //loader
+  const [loader, setLoader] = useState<boolean>(false);
+  console.log("🚀 ~ file: App.tsx:29 ~ App ~ loader:", loader);
 
   //Debouncing
   useEffect(() => {
+    searchText?.length > 0 && setLoader(true);
     const getData = setTimeout(() => {
-      searchText &&
-        searchText !== debouncedSearchText[debouncedSearchText?.length - 1] &&
+      if (
+        searchText &&
+        searchText !== debouncedSearchText[debouncedSearchText?.length - 1]
+      ) {
         setDebouncedSearchText([...debouncedSearchText, searchText]);
+      }
+     
     }, 2000);
 
     return () => clearTimeout(getData);
@@ -38,15 +47,15 @@ const App = () => {
 
   //featch weather for city
   useEffect(() => {
-    //VISIT
-    // cityListData?.length <= debouncedSearchText?.length &&
     searchText !== "" &&
       debouncedSearchText?.includes(searchText) &&
       fetchWeatherDataForCity(
         debouncedSearchText,
         cityListData,
-        setCityListData
+        setCityListData,
+        setLoader
       );
+      // setLoader(false);
   }, [debouncedSearchText]);
 
   // update localstorage
@@ -58,13 +67,27 @@ const App = () => {
   const list = ["Today", "Tomorrow", "Daily", "Weekly"];
   const weekly = ["Week 1", "Week 2"];
 
+  //to create and udpate the second customSelect data.
   useEffect(() => {
     switch (selectedCriteria[0]) {
       case ISelectedCriteria.Today:
-        setSelectedCriteriaData([...dailyWeatherData?.slice(0, 24)]);
+        setSelectedCriteriaData(
+          [...dailyWeatherData?.slice(0, 24)]?.map((item: any) => {
+            return {
+              time: item?.time?.split("T")?.[1],
+              temperature: item?.temperature,
+            };
+          })
+        );
         break;
       case ISelectedCriteria.Tomorrow:
-        const data = [...dailyWeatherData?.slice(24, 48)];
+        const data = [...dailyWeatherData?.slice(24, 48)]?.map((item: any) => {
+          return {
+            time: item?.time?.split("T")?.[1],
+            temperature: item?.temperature,
+          };
+        });
+        console.log("🚀 ~ file: App.tsx:76 ~ useEffect ~ data:", data);
         setSelectedCriteriaData([...data]);
         break;
       case ISelectedCriteria.Daily:
@@ -136,13 +159,14 @@ const App = () => {
     return {
       searchText,
       setSearchText,
+      
     };
   };
   const propData = createSearchAppBarProps();
 
+  console.log("selectedCriteria", selectedCriteria);
   return (
-    <div
-    >
+    <div style={{ overflowX: "hidden" }}>
       <div style={{ paddingBottom: "50px" }}>
         <Header propData={propData} />
         <Typography
@@ -169,6 +193,7 @@ const App = () => {
             setVariable={selectedCriteria}
             setterFunction={setSelectedCriteria}
             inputCategory="Criteria"
+            filteringCriteria="Criteria"
           />
           {selectedCriteria && (
             <div
@@ -191,13 +216,7 @@ const App = () => {
                 data={selectedCriteriaData}
                 setVariable={selectedTime}
                 setterFunction={setSelectedTime}
-                inputCategory={
-                  selectedCriteria?.[0] === "Daily"
-                    ? "Daily"
-                    : selectedCriteria?.[0] === "Weekly"
-                    ? "Weekly"
-                    : "Hourly"
-                }
+                filteringCriteria={selectedCriteriaData?.[0]?.time}
               />
             </div>
           )}
@@ -211,64 +230,71 @@ const App = () => {
           />
         )}
       </div>
-      {cityListData?.length > 0 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            paddingBottom: "30px",
-          }}
-        >
-          <Typography color="text.secondary" variant="h4">
-            Searched Result
-          </Typography>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setCityListData([]);
-              localStorage.removeItem("cityListData");
-            }}
-          >
-            Clear
-          </Button>
-        </div>
-      )}
-      {cityListData?.length > 0 && (
-        <Grid
-          container
-          spacing={3}
-          style={{
-            margin: "auto",
-            display: "flex",
-            justifyContent: "space-around",
-            backgroundColor: "#FCC8D1",
-            padding: "30px 0px",
-            // border: "1px solid gray",
-            // boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.3)",
-          }}
-        >
-          {cityListData?.map((city: string) => {
-            return (
-              <Grid
-                item
-                xs={10}
-                sm={8}
-                md={5}
-                lg={5}
-                xl={3.5}
-                style={{
-                  height: "38vh",
-                  paddingLeft: "0px",
-                  paddingTop: "0px",
-                  backgroundColor: "#EEEEEE",
-                  marginBottom: "30px",
+
+      {loader ? (
+        <CustomPopup />
+      ) : (
+        <div>
+          {cityListData?.length > 0 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                paddingBottom: "30px",
+              }}
+            >
+              <Typography color="text.secondary" variant="h4">
+                Searched Result
+              </Typography>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setCityListData([]);
+                  localStorage.removeItem("cityListData");
                 }}
               >
-                <CityCard city={city} />
-              </Grid>
-            );
-          })}
-        </Grid>
+                Clear
+              </Button>
+            </div>
+          )}
+          {cityListData?.length > 0 && (
+            <Grid
+              container
+              spacing={3}
+              style={{
+                margin: "auto",
+                display: "flex",
+                justifyContent: "space-around",
+                backgroundColor: "#FCC8D1",
+                padding: "30px 0px",
+                // border: "1px solid gray",
+                // boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.3)",
+              }}
+            >
+              {cityListData?.map((city: string) => {
+                return (
+                  <Grid
+                    item
+                    xs={10}
+                    sm={8}
+                    md={5}
+                    lg={5}
+                    xl={3.5}
+                    style={{
+                      height: "38vh",
+                      paddingLeft: "0px",
+                      paddingTop: "0px",
+                      backgroundColor: "#EEEEEE",
+                      marginBottom: "30px",
+                    }}
+                  >
+                    <CityCard city={city} />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          )}
+        </div>
       )}
     </div>
   );

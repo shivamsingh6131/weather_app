@@ -45,15 +45,17 @@ export const fetchWeatherData = async (
   }
 };
 
+//fetch city lat & lon and after that fetch wetather data
 export const fetchWeatherDataForCity = async (
   cityData: [],
   cityListData: any,
-  setCityListData: any
+  setCityListData: any,
+  setLoader: any
 ) => {
   try {
     const currentCity = cityData[cityData.length - 1];
-    console.log("🚀 ~ file: helper.ts:54 ~ currentCity:", currentCity);
 
+    //fetch cordinates of the searched city
     const cityCordinates = await fetch(
       `https://api.opencagedata.com/geocode/v1/json?key=a47ec1100cf64526b3cf924711e95230&q=${currentCity}`
     );
@@ -64,19 +66,19 @@ export const fetchWeatherDataForCity = async (
     const stateDistrict =
       cityCordinatesData?.results?.[0]?.components?.state_district;
 
+    //fetching weather on basis of city cordinates
     const weatherResponse = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&current_weather=true&&forecast_days=1`
     );
     const weatherResponsData = await weatherResponse.json();
-    console.log(
-      "🚀 ~ file: helper.ts:70 ~ weatherResponsData:",
-      weatherResponsData
-    );
 
     //if error in api response
-    if (weatherResponsData?.error) return setCityListData([...cityListData]);
-    const temperature = weatherResponsData?.current_weather?.temperature;
+    if (weatherResponsData?.error) {
+      setLoader(false)
+      return setCityListData([...cityListData]);
+    }
 
+    const temperature = weatherResponsData?.current_weather?.temperature;
     const prepareCityData = {
       Country,
       stateDistrict,
@@ -93,9 +95,8 @@ export const fetchWeatherDataForCity = async (
       return [...last, curr];
     }, []);
 
-    console.log("prepareCityData", prepareCityData);
-
     setCityListData([...removeSameObjects, prepareCityData]);
+    setLoader(false)
   } catch (error) {
     console.log(error);
   }
