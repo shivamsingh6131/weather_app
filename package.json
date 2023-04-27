@@ -26,12 +26,21 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "node_modules/*",
+      "weatherFrontend/src/utils/type",
+      "weatherFrontend/src/utils/constants.ts",
+      "weatherFrontend/src/index.tsx"
     ]
   },
   "browserslist": {

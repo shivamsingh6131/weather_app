@@ -75,5 +75,5 @@ export interface ICityListData {
   latitude: number;
   longitude: number;
   stateDistrict: string | any;
-  temperature: 34.2;
+  temperature: number;
 }

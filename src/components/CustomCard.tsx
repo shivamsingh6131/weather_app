@@ -12,7 +12,7 @@ import {
   getCurrentLocation,
 } from "../utils/helper";
 
-function CustomCard(props: ICustomCardProps) {
+const CustomCard = (props: ICustomCardProps) => {
   const [cordinates, setCordinates] = useState<Icordinates>({
     latitude: 0,
     longitude: 0,
