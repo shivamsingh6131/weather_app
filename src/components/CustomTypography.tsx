@@ -19,8 +19,8 @@ const CustomTypography = (props: ICustomTypographyProps) => {
         <Dna
           wrapperStyle={{
             display: "block",
-            "margin-left": "auto",
-            "margin-right": "auto",
+            "marginLeft": "auto",
+            "marginRight": "auto",
           }}
           visible={true}
           height={props.loaderHeightWidth ?? "80"}

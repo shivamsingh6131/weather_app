@@ -1,10 +1,10 @@
 export interface ICustomTypographyProps {
   component?: React.Component;
   condition: boolean;
-  typegraphyData: any;
   temperatureData?: string;
-  typegraphystyles?: any;
-  additionalProps?: any;
+  typegraphystyles?: any; //styles
+  additionalProps?: any; //styles
+  typegraphyData: string | number;
   loaderHeightWidth?: string;
 }
 
@@ -13,7 +13,7 @@ export interface Icordinates {
   longitude: number;
 }
 
-export interface ICustomProps {
+export interface ICustomHeaderProps {
   propData: IPropData;
 }
 export interface IPropData {
@@ -23,34 +23,60 @@ export interface IPropData {
 
 export interface ICustomCardProps {
   setDailyWeatherData: any;
-  dailyWeatherData: any;
+  dailyWeatherData: IdailyWeatherData[];
   isCustomised?: boolean;
-  customisedData?: any;
+  customisedData?: string;
 }
 
+
 export interface IdailyWeatherData {
-  time : string;
-  temperature : number
+  time: string;
+  temperature: number;
 }
 
 export interface IMultipleSelectProps {
-  setVariable : string,
-  setterFunction : any,
-  data : unknown[],
-  inputCategory?: string,
-  filteringCriteria?:string,
+  setVariable: string;
+  data: IdailyWeatherData[] | string[];
+  inputCategory?: string;
+  filteringCriteria?: string;
+  haveCriteriaChanged?: boolean;
+  selectTwo?:boolean;
+  setHavecriteriaChanged?:any;
+  setterFunction: any;
 }
 export interface ICityCardContainer {
-  cityListData : any,
-  setCityListData : any,
+  cityListData: ICityListData[];
+  setCityListData: any;
 }
 export interface ICustomisedCardContainerProps {
-  selectedCriteria : any,
-  setSelectedCriteria : any,
-  selectedCriteriaData : any,
-  selectedTime : any,
-  setSelectedTime : any,
-  setDailyWeatherData : any,
-  customisedData : any,
-  list:any,
+  selectedCriteria: string;
+  selectedCriteriaData: IdailyWeatherData[];
+  selectedTime: string;
+  customisedData: string | number;
+  list: string[];
+  setSelectedCriteria: any;
+  setSelectedTime: any;
+  setDailyWeatherData: any;
+}
+
+export interface ICityCardProps {
+  city: ICity;
+}
+
+export interface ICity {
+  currentCity?: string;
+  temperature?: number;
+  latitude?: number;
+  longitude?: number;
+  stateDistrict?: string;
+  Country?: string;
+}
+
+export interface ICityListData {
+  Country: string;
+  currentCity: string;
+  latitude: number;
+  longitude: number;
+  stateDistrict: string | any;
+  temperature: number;
 }

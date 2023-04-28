@@ -1,4 +1,9 @@
-import { Icordinates, IdailyWeatherData } from "./type/types";
+import {
+  allWeatherData,
+  cityCordinatesInfo,
+  fetchCityName,
+} from "./Api/apiHelper";
+import { Icordinates } from "./type/types";
 
 //fetch city name on the basis of latitude and logitude.
 export const getCityName = async (
@@ -8,16 +13,10 @@ export const getCityName = async (
   setCityName: any
 ) => {
   try {
-    // const response = await fetch(
-    //   `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
-    // );
-    const response = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?key=a47ec1100cf64526b3cf924711e95230&q=${latitude}%2C${longitude}&pretty=1`
-    );
-    const data = await response.json();
+    const data = await fetchCityName({ latitude, longitude });
     setCityName({ ...cityName, ...data });
   } catch (error) {
-    console.log(error);
+    console.log("getCityName: something went wrong " ,error);
   }
 };
 
@@ -29,17 +28,14 @@ export const fetchWeatherData = async (
   setDailyWeatherData?: any
 ) => {
   try {
-    const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${cordinates?.latitude}&longitude=${cordinates?.longitude}&hourly=temperature_2m&current_weather=true&&forecast_days=16`
-    );
-    const data = await response.json();
+    const data = await allWeatherData(cordinates, 16);
     setCurrentWeather({ ...currentWeather, ...data });
     if (setDailyWeatherData) {
       const reformatedData = reformatTimeWiseWeather(data);
       setDailyWeatherData([...reformatedData]);
     }
   } catch (error) {
-    console.log(error);
+    console.log("fetchWeatherData: something went wrong ", error);
   }
 };
 
@@ -52,12 +48,9 @@ export const fetchWeatherDataForCity = async (
 ) => {
   try {
     const currentCity = cityData[cityData.length - 1];
-
     //fetch cordinates of the searched city
-    const cityCordinates = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?key=a47ec1100cf64526b3cf924711e95230&q=${currentCity}`
-    );
-    const cityCordinatesData = await cityCordinates.json();
+
+    const cityCordinatesData = await cityCordinatesInfo(currentCity);
     const latitude = cityCordinatesData?.results?.[0]?.geometry?.lat;
     const longitude = cityCordinatesData?.results?.[0]?.geometry?.lng;
     const Country = cityCordinatesData?.results?.[0]?.components?.country;
@@ -65,10 +58,7 @@ export const fetchWeatherDataForCity = async (
       cityCordinatesData?.results?.[0]?.components?.state_district;
 
     //fetching weather on basis of city cordinates
-    const weatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&current_weather=true&&forecast_days=1`
-    );
-    const weatherResponsData = await weatherResponse.json();
+    const weatherResponsData = await allWeatherData({ latitude, longitude }, 1);
 
     //if error in api response
     if (weatherResponsData?.error) {
@@ -87,7 +77,7 @@ export const fetchWeatherDataForCity = async (
     };
     //to fix multiple same city card.
     const removeSameObjects = cityListData?.reduce((last: any, curr: any) => {
-      if (curr?.currentCity === currentCity) {
+      if (curr?.currentCity?.toLowerCase() === currentCity?.toLowerCase()) {
         return [...last];
       }
       setLoader(false);
@@ -97,7 +87,7 @@ export const fetchWeatherDataForCity = async (
     setCityListData([...removeSameObjects, prepareCityData]);
     setLoader(false);
   } catch (error) {
-    console.log(error);
+    console.log("fetchWeatherDataForCity: something went wrong ", error);
   }
 };
 
@@ -165,7 +155,12 @@ export const evaluateDailyBasedData = (dailyWeatherData: any) => {
       count += curr?.temperature;
       index++;
       if (index === 23) {
-        date.push(curr?.time?.split("T")?.[0]);
+        date.push(
+          curr?.time
+            ?.split("T")?.[0]
+            ?.split("-")
+            ?.reverse()?.join("-")
+        );
         index = 0;
         const returnData = [...last, (count / 24)?.toFixed(2)];
         count = 0;

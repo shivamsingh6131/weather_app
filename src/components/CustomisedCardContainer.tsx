@@ -39,7 +39,7 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexWrap : "wrap"
+              flexWrap: "wrap",
             }}
           >
             <Button
@@ -65,7 +65,7 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
           setDailyWeatherData={setDailyWeatherData}
           dailyWeatherData={selectedCriteriaData}
           isCustomised={Boolean(customisedData)}
-          customisedData={customisedData}
+          customisedData={customisedData as string}
         />
       )}
     </div>

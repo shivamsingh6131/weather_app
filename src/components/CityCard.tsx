@@ -4,8 +4,9 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import CustomTypography from "./CustomTypography";
+import { ICityCardProps } from "../utils/type";
 
-function CityCard(props: any) {
+function CityCard(props: ICityCardProps) {
   return (
     <div style={{ textAlign: "center" }}>
       <Card sx={{ minWidth: 275, backgroundColor: "#BA90C6", height: "auto" }}>
@@ -17,15 +18,14 @@ function CityCard(props: any) {
           >
             <CustomTypography
               condition={true}
-              typegraphyData={props?.city?.currentCity ?? ""}
+              typegraphyData={props?.city?.currentCity ?? "current city not available"}
               typegraphystyles={{ fontSize: 26 }}
               loaderHeightWidth={"35"}
             />
             <CustomTypography
               condition={true}
-              typegraphyData={props?.city?.temperature}
+              typegraphyData={props?.city?.temperature as string | number ?? "temp not available"}
               temperatureData={"°C"}
-              additionalProps={"gutterBottom"}
               typegraphystyles={{ fontSize: 36 }}
               loaderHeightWidth={"50"}
             />
@@ -37,7 +37,7 @@ function CityCard(props: any) {
             condition={true}
             typegraphyData={`latitude ${Number(props?.city?.latitude)?.toFixed(
               2
-            )}`}
+            ) ?? ' not available'}`}
             typegraphystyles={{ mb: 0.5 }}
             loaderHeightWidth={"40"}
           />
@@ -45,19 +45,19 @@ function CityCard(props: any) {
             condition={true}
             typegraphyData={`longitude ${Number(
               props?.city?.longitude
-            )?.toFixed(2)}`}
+            )?.toFixed(2) ?? ' not available'}`}
             typegraphystyles={{ mb: 0.5 }}
             loaderHeightWidth={"40"}
           />
           <CustomTypography
             condition={true}
-            typegraphyData={props?.city?.Country ?? ""}
+            typegraphyData={props?.city?.Country ?? "City not available"}
             typegraphystyles={{ fontSize: 36, mt: 1.5, mb: 0 }}
             loaderHeightWidth={"50"}
           />
           <CustomTypography
             condition={true}
-            typegraphyData={props?.city?.stateDistrict ?? ""}
+            typegraphyData={props?.city?.stateDistrict ?? "no district found"}
             typegraphystyles={{ mb: 1.5, fontSize: 16 }}
             loaderHeightWidth={"50"}
           />

@@ -6,7 +6,7 @@ import {
   fetchWeatherDataForCity,
 } from "../utils/helper";
 import { ISelectedCriteria } from "../utils/type/enum";
-import { IdailyWeatherData } from "../utils/type/types";
+import { ICityListData, IdailyWeatherData } from "../utils/type/types";
 import Header from "../components/Header";
 import { Typography } from "@mui/material";
 import CustomCard from "../components/CustomCard";
@@ -21,15 +21,14 @@ const Homepage = () => {
   const [debouncedSearchText, setDebouncedSearchText] = useState<string[]>([]);
   //handle all the data for weather
   const [dailyWeatherData, setDailyWeatherData] = useState([]);
-  console.log("🚀 ~ file: Homepage.tsx:24 ~ Homepage ~ dailyWeatherData:", dailyWeatherData)
   const [selectedTime, setSelectedTime] = useState<string>("");
   //for second card
   const [customisedData, setCustomisedData] = useState<number>(0);
   //for the dorpdown
   const [selectedCriteria, setSelectedCriteria] = useState<string>("");
-  const [selectedCriteriaData, setSelectedCriteriaData] = useState<any>([]);
+  const [selectedCriteriaData, setSelectedCriteriaData] = useState<IdailyWeatherData[]>([]);
   //city wise data
-  const [cityListData, setCityListData] = useState<any>([
+  const [cityListData, setCityListData] = useState<ICityListData[]>([
     ...(JSON.parse(localStorage.getItem("cityListData") as string) ?? []),
   ]);
   //loader
@@ -71,7 +70,7 @@ const Homepage = () => {
 
   //to create and udpate the second customSelect data.
   useEffect(() => {
-    switch (selectedCriteria[0]) {
+    switch (selectedCriteria) {
       case ISelectedCriteria.Today:
         setSelectedCriteriaData(
           evaluateTodayAndTomorrowData(dailyWeatherData, 0, 24)

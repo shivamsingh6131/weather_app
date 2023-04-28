@@ -7,12 +7,9 @@ import { Grid } from "@mui/material";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import CustomTypography from "./CustomTypography";
 import { ICustomCardProps, Icordinates } from "../utils/type/types";
-import {
-  fetchWeatherData,
-  getCurrentLocation,
-} from "../utils/helper";
+import { fetchWeatherData, getCurrentLocation } from "../utils/helper";
 
-function CustomCard(props: ICustomCardProps) {
+const CustomCard = (props: ICustomCardProps) => {
   const [cordinates, setCordinates] = useState<Icordinates>({
     latitude: 0,
     longitude: 0,
@@ -24,7 +21,7 @@ function CustomCard(props: ICustomCardProps) {
     getCurrentLocation(cityName, setCityName, cordinates, setCordinates);
   }, []);
 
-  useEffect(() => {
+  const fetchWeatherDataWrapper = () => {
     cordinates.latitude !== 0 &&
       fetchWeatherData(
         cordinates,
@@ -32,6 +29,14 @@ function CustomCard(props: ICustomCardProps) {
         currentWeather,
         props.setDailyWeatherData
       );
+  };
+
+  useEffect(() => {
+    fetchWeatherDataWrapper();
+    //To fetch Live data
+    setInterval(() => {
+      fetchWeatherDataWrapper();
+    }, 10000);
   }, [cordinates]);
 
   return (
@@ -81,7 +86,9 @@ function CustomCard(props: ICustomCardProps) {
                   temperatureData={
                     currentWeather?.hourly_units?.temperature_2m || ""
                   }
-                  additionalProps={"gutterBottom"}
+                  additionalProps={{
+                    "gutterBottom": true
+                  }}
                   typegraphystyles={{ fontSize: 36 }}
                   loaderHeightWidth={"50"}
                 />
@@ -125,6 +132,7 @@ function CustomCard(props: ICustomCardProps) {
           </Card>
         </Grid>
         <Grid
+          item
           xs={1}
           sm={2}
           md={3.5}
@@ -135,6 +143,6 @@ function CustomCard(props: ICustomCardProps) {
       </Grid>
     </div>
   );
-}
+};
 
 export default CustomCard;
