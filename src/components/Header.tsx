@@ -42,9 +42,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: "12ch",
+      width: "40ch",
       "&:focus": {
-        width: "20ch",
+        width: "50ch",
       },
     },
   },
@@ -68,7 +68,7 @@ const  Header = (props: ICustomHeaderProps) => {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search City Name..."
               inputProps={{ "aria-label": "search" }}
               value={props?.propData?.searchText}
               onChange={(e) =>props?.propData?.setSearchText(e?.target?.value)

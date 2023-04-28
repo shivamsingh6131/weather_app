@@ -37,7 +37,6 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
           setterFunction={setSelectedCriteria}
           inputCategory="Criteria"
           filteringCriteria="Criteria"
-          criteriaChanged={criteriaChanged}
           setCriteriaChanged={setCriteriaChanged}
         />
         {selectedCriteria && (
@@ -63,7 +62,6 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
               setVariable={selectedTime}
               setterFunction={setSelectedTime}
               filteringCriteria={selectedCriteriaData?.[0]?.time}
-              criteriaChanged={criteriaChanged}
               setCriteriaChanged={setCriteriaChanged}
             />
           </div>
