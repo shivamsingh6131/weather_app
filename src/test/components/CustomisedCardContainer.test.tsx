@@ -1,13 +1,12 @@
 import {  render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CustomisedCardContainer from "../../components/CustomisedCardContainer";
-import { customisedCardComponent } from "../../utils/mock/CustomisedCardContainer";
+import { customisedCardComponent } from "../../utils/mock";
 import userEvent from "@testing-library/user-event";
 
 beforeEach(() => {
   const mockGeolocation = {
     getCurrentPosition: jest.fn().mockImplementation(() => {
-      console.log("being called");
       return {
         latitude: 23.0438564,
         longitude: 72.5086395,

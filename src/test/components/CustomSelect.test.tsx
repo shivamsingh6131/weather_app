@@ -1,6 +1,6 @@
 import {render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { customSelectPropsMock } from "../../utils/mock/customSelectMock";
+import { customSelectPropsMock } from "../../utils/mock";
 import CustomSelect from "../../components/CustomSelect";
 import userEvent from "@testing-library/user-event";
 

@@ -5,7 +5,7 @@ import {
 } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Header from "../../components/Header";
-import { headerPorpsMock } from "../../utils/mock/HeaderMock";
+import { headerPorpsMock } from "../../utils/mock";
 
 test("it should Header without crashing", async () => {
   render(<Header {...headerPorpsMock} />);

@@ -4,8 +4,8 @@ import {
   evaluateTodayAndTomorrowData,
   evaluateWeeklyBasedData,
   fetchWeatherDataForCity,
+  handleSelctionCriteria,
 } from "../utils/helper";
-import { ISelectedCriteria } from "../utils/type/enum";
 import { ICityListData, IdailyWeatherData } from "../utils/type/types";
 import Header from "../components/Header";
 import { Typography } from "@mui/material";
@@ -13,20 +13,24 @@ import CustomCard from "../components/CustomCard";
 import CustomisedCardContainer from "../components/CustomisedCardContainer";
 import CustomPopup from "../components/CustomPopup";
 import CityCardContainer from "../components/CityCardContainer";
-import { list, weekly } from "../utils";
+import { list } from "../utils";
 
 const Homepage = () => {
   //header component data
   const [searchText, setSearchText] = useState<string>("");
   const [debouncedSearchText, setDebouncedSearchText] = useState<string[]>([]);
   //handle all the data for weather
-  const [dailyWeatherData, setDailyWeatherData] = useState([]);
+  const [dailyWeatherData, setDailyWeatherData] = useState<IdailyWeatherData[]>(
+    []
+  );
   const [selectedTime, setSelectedTime] = useState<string>("");
   //for second card
   const [customisedData, setCustomisedData] = useState<number>(0);
   //for the dorpdown
   const [selectedCriteria, setSelectedCriteria] = useState<string>("");
-  const [selectedCriteriaData, setSelectedCriteriaData] = useState<IdailyWeatherData[]>([]);
+  const [selectedCriteriaData, setSelectedCriteriaData] = useState<
+    IdailyWeatherData[]
+  >([]);
   //city wise data
   const [cityListData, setCityListData] = useState<ICityListData[]>([
     ...(JSON.parse(localStorage.getItem("cityListData") as string) ?? []),
@@ -70,37 +74,11 @@ const Homepage = () => {
 
   //to create and udpate the second customSelect data.
   useEffect(() => {
-    switch (selectedCriteria) {
-      case ISelectedCriteria.Today:
-        setSelectedCriteriaData(
-          evaluateTodayAndTomorrowData(dailyWeatherData, 0, 24)
-        );
-        break;
-      case ISelectedCriteria.Tomorrow:
-        const data = evaluateTodayAndTomorrowData(dailyWeatherData, 24, 48);
-        setSelectedCriteriaData([...data]);
-        break;
-      case ISelectedCriteria.Daily:
-        const { dailyData, date } = evaluateDailyBasedData(dailyWeatherData);
-        setSelectedCriteriaData([
-          ...date?.map((item, index) => {
-            return { time: item, temperature: dailyData[index] };
-          }),
-        ]);
-        break;
-
-      case ISelectedCriteria.Weekly:
-        let weeklyData = evaluateWeeklyBasedData(dailyWeatherData);
-        setSelectedCriteriaData([
-          ...weekly?.map((item, index) => {
-            return { time: item, temperature: weeklyData[index] };
-          }),
-        ]);
-        break;
-
-      default:
-        break;
-    }
+    handleSelctionCriteria(
+      selectedCriteria,
+      setSelectedCriteriaData,
+      dailyWeatherData
+    );
   }, [selectedCriteria]);
 
   useEffect(() => {
@@ -121,7 +99,7 @@ const Homepage = () => {
   const propData = createSearchAppBarProps();
 
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div >
       <div style={{ paddingBottom: "50px" }}>
         <Header propData={propData} />
         <Typography
