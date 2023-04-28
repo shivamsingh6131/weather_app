@@ -3,7 +3,7 @@ import {
   cityCordinatesInfo,
   fetchCityName,
 } from "./Api/apiHelper";
-import { Icordinates } from "./type/types";
+import { Icordinates, IdailyWeatherData } from "./type/types";
 
 //fetch city name on the basis of latitude and logitude.
 export const getCityName = async (
@@ -95,7 +95,7 @@ export const fetchWeatherDataForCity = async (
 export const getCurrentLocation = (
   cityName: any,
   setCityName: any,
-  cordinates: any,
+  cordinates: Icordinates,
   setCordinates: any
 ) => {
   navigator.geolocation.getCurrentPosition((position) => {
@@ -130,7 +130,7 @@ export const reformatTimeWiseWeather = (weather: any) => {
 
 //evaluates today data and returns
 export const evaluateTodayAndTomorrowData = (
-  dailyWeatherData: any,
+  dailyWeatherData: IdailyWeatherData[],
   sliceStart: number,
   sliceEnd: number
 ) => {
