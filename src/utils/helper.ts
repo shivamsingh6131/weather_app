@@ -1,9 +1,10 @@
+import { SetStateAction } from "react";
 import {
   allWeatherData,
   cityCordinatesInfo,
   fetchCityName,
 } from "./Api/apiHelper";
-import { Icordinates, IdailyWeatherData } from "./type/types";
+import { ICityListData, Icordinates, IdailyWeatherData } from "./type/types";
 
 //fetch city name on the basis of latitude and logitude.
 export const getCityName = async (
@@ -25,7 +26,7 @@ export const fetchWeatherData = async (
   cordinates: Icordinates,
   setCurrentWeather: any,
   currentWeather: any,
-  setDailyWeatherData?: any
+  setDailyWeatherData?: React.Dispatch<SetStateAction<IdailyWeatherData[]>>
 ) => {
   try {
     const data = await allWeatherData(cordinates, 16);
@@ -42,9 +43,9 @@ export const fetchWeatherData = async (
 //fetch city lat & lon and after that fetch wetather data
 export const fetchWeatherDataForCity = async (
   cityData: string[],
-  cityListData: any,
-  setCityListData: any,
-  setLoader: any
+  cityListData: ICityListData[],
+  setCityListData: React.Dispatch<SetStateAction<ICityListData[]>>,
+  setLoader: React.Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     const currentCity = cityData[cityData.length - 1];

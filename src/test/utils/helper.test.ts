@@ -15,6 +15,7 @@ import {
   dailyWeatherDataMock,
   rawDailyWeatherDataMock,
 } from "../../utils/mock/helperMock";
+import { ICityListData } from "../../utils/type";
 
 beforeEach(() => {
   const mockGeolocation = {
@@ -92,14 +93,14 @@ test("it should properly exicute fetchWeatherDataForCity", async () => {
 
   //try block
   expect(
-    await fetchWeatherDataForCity(["goa"], cityListData, jest.fn(), jest.fn())
+    await fetchWeatherDataForCity(["goa"], cityListData as ICityListData[], jest.fn(), jest.fn())
   ).toBeUndefined();
   expect(fetchCityNameApiSpy).toHaveBeenCalledTimes(1);
   //   catch block
   expect(
     await fetchWeatherDataForCity(
       ["goa"],
-      "test-cityListData",
+      cityListData,
       jest.fn(),
       jest.fn()
     )

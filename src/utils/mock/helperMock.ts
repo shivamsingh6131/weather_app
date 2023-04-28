@@ -1,3 +1,5 @@
+import { ICityListData } from "../type";
+
 export const allWeatherReturnMock = {
   latitude: 23,
   longitude: 72.5,
@@ -1589,13 +1591,14 @@ export const cityCordinatesInfoMock = {
   },
   total_results: 10,
 };
-export const cityListData = [
+export const cityListData : ICityListData[] = [
   {
     Country: "India",
     temperature: 36,
     longitude: 74.0855134,
     latitude: 15.3004543,
     currentCity: "goa",
+    stateDistrict : ""
   },
   {
     Country: "India",

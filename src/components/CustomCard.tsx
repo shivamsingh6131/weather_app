@@ -14,6 +14,7 @@ const CustomCard = (props: ICustomCardProps) => {
     latitude: 0,
     longitude: 0,
   });
+  //api data
   const [currentWeather, setCurrentWeather] = useState<any>({});
   const [cityName, setCityName] = useState<any>({});
 

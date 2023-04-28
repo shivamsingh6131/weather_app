@@ -1,3 +1,5 @@
+import { SetStateAction } from "react";
+
 export interface ICustomTypographyProps {
   component?: React.Component;
   condition: boolean;
@@ -18,11 +20,11 @@ export interface ICustomHeaderProps {
 }
 export interface IPropData {
   searchText: string;
-  setSearchText: any;
+  setSearchText: React.Dispatch<SetStateAction<string>>;
 }
 
 export interface ICustomCardProps {
-  setDailyWeatherData: any;
+  setDailyWeatherData: React.Dispatch<SetStateAction<IdailyWeatherData[]>>;
   dailyWeatherData: IdailyWeatherData[];
   isCustomised?: boolean;
   customisedData?: string;
@@ -41,12 +43,12 @@ export interface IMultipleSelectProps {
   filteringCriteria?: string;
   haveCriteriaChanged?: boolean;
   selectTwo?:boolean;
-  setHavecriteriaChanged?:any;
+  setHavecriteriaChanged?:React.Dispatch<SetStateAction<boolean>>;
   setterFunction: any;
 }
 export interface ICityCardContainer {
   cityListData: ICityListData[];
-  setCityListData: any;
+  setCityListData: React.Dispatch<SetStateAction<ICityListData[]>>;
 }
 export interface ICustomisedCardContainerProps {
   selectedCriteria: string;
@@ -54,9 +56,9 @@ export interface ICustomisedCardContainerProps {
   selectedTime: string;
   customisedData: string | number;
   list: string[];
-  setSelectedCriteria: any;
-  setSelectedTime: any;
-  setDailyWeatherData: any;
+  setSelectedCriteria: React.Dispatch<SetStateAction<string>>;
+  setSelectedTime: React.Dispatch<SetStateAction<string>>;
+  setDailyWeatherData: React.Dispatch<SetStateAction<IdailyWeatherData[]>>;
 }
 
 export interface ICityCardProps {

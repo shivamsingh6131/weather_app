@@ -20,7 +20,7 @@ const Homepage = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [debouncedSearchText, setDebouncedSearchText] = useState<string[]>([]);
   //handle all the data for weather
-  const [dailyWeatherData, setDailyWeatherData] = useState([]);
+  const [dailyWeatherData, setDailyWeatherData] = useState<IdailyWeatherData[]>([]);
   const [selectedTime, setSelectedTime] = useState<string>("");
   //for second card
   const [customisedData, setCustomisedData] = useState<number>(0);
