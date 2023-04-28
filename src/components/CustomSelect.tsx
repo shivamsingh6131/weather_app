@@ -2,7 +2,8 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { IMultipleSelectProps } from "../utils/type/types";
+import { ICustomSelectProps } from "../utils/type/types";
+import { list } from "../utils";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -15,12 +16,34 @@ const MenuProps = {
   },
 };
 
-const CustomSelect = (props: IMultipleSelectProps) => {
+const CustomSelect = (props: ICustomSelectProps) => {
+  const {
+    setterFunction,
+    setVariable,
+    filteringCriteria,
+    data,
+    inputCategory,
+    setCriteriaChanged,
+  } = props;
+
+  // const [criteriaUpdated, setCriteriaUpdated] = useState(true)
+
+  const evaluateIfCriteriaChanged = (changeValue: any): boolean => {
+    if (list?.includes(changeValue)) {
+      setCriteriaChanged?.(true);
+      return true;
+    } else {
+      setCriteriaChanged?.(false);
+      return false;
+    }
+  };
+
   const handleChange = (event: any) => {
     const {
       target: { value },
     } = event;
-    props?.setterFunction(value);
+    evaluateIfCriteriaChanged(value);
+    setterFunction(value);
   };
 
   return (
@@ -29,22 +52,22 @@ const CustomSelect = (props: IMultipleSelectProps) => {
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
-          value={props?.setVariable}
+          value={setVariable}
           onChange={handleChange}
           input={<OutlinedInput />}
           displayEmpty
           MenuProps={MenuProps}
         >
           <MenuItem disabled value="">
-            <em>{props?.filteringCriteria}</em>
+            <em>{filteringCriteria}</em>
           </MenuItem>
-          {props?.data?.slice(0, 23)?.map((item: any, index: number) => {
+          {data?.slice(0, 23)?.map((item: any, index: number) => {
             return (
               <MenuItem
                 key={item + index}
-                value={props?.inputCategory === "Criteria" ? item : item?.time}
+                value={inputCategory === "Criteria" ? item : item?.time}
               >
-                {props?.inputCategory === "Criteria" ? item : item?.time}
+                {inputCategory === "Criteria" ? item : item?.time}
               </MenuItem>
             );
           })}

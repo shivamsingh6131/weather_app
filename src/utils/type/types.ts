@@ -30,21 +30,21 @@ export interface ICustomCardProps {
   customisedData?: string;
 }
 
-
 export interface IdailyWeatherData {
   time: string;
   temperature: number;
 }
 
-export interface IMultipleSelectProps {
+export interface ICustomSelectProps {
   setVariable: string;
   data: IdailyWeatherData[] | string[];
   inputCategory?: string;
   filteringCriteria?: string;
   haveCriteriaChanged?: boolean;
-  selectTwo?:boolean;
-  setHavecriteriaChanged?:React.Dispatch<SetStateAction<boolean>>;
+  selectTwo?: boolean;
+  setHavecriteriaChanged?: React.Dispatch<SetStateAction<boolean>>;
   setterFunction: any;
+  setCriteriaChanged?: React.Dispatch<SetStateAction<boolean>>;
 }
 export interface ICityCardContainer {
   cityListData: ICityListData[];

@@ -1,10 +1,11 @@
 import { Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomCard from "./CustomCard";
 import { ICustomisedCardContainerProps } from "../utils/type/types";
 import CustomSelect from "./CustomSelect";
 
 const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
+  const [criteriaChanged, setCriteriaChanged] = useState(true);
   const {
     list,
     selectedCriteria,
@@ -15,6 +16,10 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
     setDailyWeatherData,
     customisedData,
   } = props;
+
+  useEffect(() => {
+    criteriaChanged && setSelectedTime("")
+  },[criteriaChanged])
 
   return (
     <div>
@@ -32,6 +37,8 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
           setterFunction={setSelectedCriteria}
           inputCategory="Criteria"
           filteringCriteria="Criteria"
+          criteriaChanged={criteriaChanged}
+          setCriteriaChanged={setCriteriaChanged}
         />
         {selectedCriteria && (
           <div
@@ -56,6 +63,8 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
               setVariable={selectedTime}
               setterFunction={setSelectedTime}
               filteringCriteria={selectedCriteriaData?.[0]?.time}
+              criteriaChanged={criteriaChanged}
+              setCriteriaChanged={setCriteriaChanged}
             />
           </div>
         )}
