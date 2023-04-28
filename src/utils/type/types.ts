@@ -39,6 +39,9 @@ export interface IMultipleSelectProps {
   data: IdailyWeatherData[] | string[];
   inputCategory?: string;
   filteringCriteria?: string;
+  haveCriteriaChanged?: boolean;
+  selectTwo?:boolean;
+  setHavecriteriaChanged?:any;
   setterFunction: any;
 }
 export interface ICityCardContainer {

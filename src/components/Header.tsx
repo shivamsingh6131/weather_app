@@ -50,7 +50,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Header(props: ICustomHeaderProps) {
+const  Header = (props: ICustomHeaderProps) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: "#BA90C6" }}>
@@ -72,10 +72,6 @@ export default function Header(props: ICustomHeaderProps) {
               inputProps={{ "aria-label": "search" }}
               value={props?.propData?.searchText}
               onChange={(e) =>props?.propData?.setSearchText(e?.target?.value)
-                // setTimeout(() => {
-                //   props?.propData?.setSearchText(e?.target?.value)
-                //   return () => clearTimeout(props?.propData?.setSearchText(e?.target?.value))
-                // }, 2000)
               }
             />
           </Search>
@@ -84,3 +80,5 @@ export default function Header(props: ICustomHeaderProps) {
     </Box>
   );
 }
+
+export default Header;

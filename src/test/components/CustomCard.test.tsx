@@ -6,7 +6,6 @@ import CustomCard from "../../components/CustomCard";
 beforeEach(() => {
   const mockGeolocation = {
     getCurrentPosition: jest.fn().mockImplementation(() => {
-      console.log("being called");
       return {
         latitude: 23.0438564,
         longitude: 72.5086395,

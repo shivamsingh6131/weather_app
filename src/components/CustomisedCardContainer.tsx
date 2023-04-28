@@ -39,7 +39,7 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexWrap : "wrap"
+              flexWrap: "wrap",
             }}
           >
             <Button

@@ -16,7 +16,6 @@ const MenuProps = {
 };
 
 const CustomSelect = (props: IMultipleSelectProps) => {
-  console.log("🚀 ~ file: CustomSelect.tsx:19 ~ MultipleSelect ~ props:", props)
   const handleChange = (event: any) => {
     const {
       target: { value },
@@ -27,9 +26,6 @@ const CustomSelect = (props: IMultipleSelectProps) => {
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
-        {/* <InputLabel id="demo-multiple-name-label">
-          {props?.filteringCriteria}
-        </InputLabel> */}
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
@@ -39,25 +35,23 @@ const CustomSelect = (props: IMultipleSelectProps) => {
           displayEmpty
           MenuProps={MenuProps}
         >
-          <MenuItem disabled value=""><em>{props?.filteringCriteria}</em></MenuItem>
+          <MenuItem disabled value="">
+            <em>{props?.filteringCriteria}</em>
+          </MenuItem>
           {props?.data?.slice(0, 23)?.map((item: any, index: number) => {
             return (
-        
-                <MenuItem
-                  key={item + index}
-                  value={
-                    props?.inputCategory === "Criteria" ? item : item?.time
-                  }
-                >
-                  {props?.inputCategory === "Criteria" ? item : item?.time}
-                </MenuItem>
-    
+              <MenuItem
+                key={item + index}
+                value={props?.inputCategory === "Criteria" ? item : item?.time}
+              >
+                {props?.inputCategory === "Criteria" ? item : item?.time}
+              </MenuItem>
             );
           })}
         </Select>
       </FormControl>
     </div>
   );
-}
+};
 
 export default CustomSelect;

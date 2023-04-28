@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import {render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { customSelectPropsMock } from "../../utils/mock/customSelectMock";
 import CustomSelect from "../../components/CustomSelect";
@@ -16,7 +16,7 @@ test("it should render CustomSelect without crashing with week selection", async
 
   //After click, it should show wee1 & week2 (list items)
   userEvent.click(defaultValue);
-  const week2 = screen.getByText("Week 2");
+  const week2 = await screen.findByText("Week 2");
   expect(week2).toBeInTheDocument();
 
   //clicking on list item (week 2)

@@ -2,6 +2,7 @@ import {  render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CustomisedCardContainer from "../../components/CustomisedCardContainer";
 import { customisedCardComponent } from "../../utils/mock/CustomisedCardContainer";
+import userEvent from "@testing-library/user-event";
 
 beforeEach(() => {
   const mockGeolocation = {
@@ -37,7 +38,9 @@ render(<CustomisedCardContainer {...updatedMock} />);
 
   expect(await screen.findByText('Get Customised Data')).toBeInTheDocument()
   expect(await screen.findByText('Weekly')).toBeInTheDocument()
-  expect(await screen.findByText('Remove Card')).toBeInTheDocument()
   expect(await screen.findByText('Week 1')).toBeInTheDocument()
+  const removeCardButton = await screen.findByText('Remove Card')
+  expect(removeCardButton).toBeInTheDocument()
 
+  userEvent.click(removeCardButton);
 });

@@ -18,15 +18,14 @@ function CityCard(props: ICityCardProps) {
           >
             <CustomTypography
               condition={true}
-              typegraphyData={props?.city?.currentCity ?? ""}
+              typegraphyData={props?.city?.currentCity ?? "current city not available"}
               typegraphystyles={{ fontSize: 26 }}
               loaderHeightWidth={"35"}
             />
             <CustomTypography
               condition={true}
-              typegraphyData={props?.city?.temperature as string | number}
+              typegraphyData={props?.city?.temperature as string | number ?? "temp not available"}
               temperatureData={"°C"}
-              additionalProps={"gutterBottom"}
               typegraphystyles={{ fontSize: 36 }}
               loaderHeightWidth={"50"}
             />
@@ -38,7 +37,7 @@ function CityCard(props: ICityCardProps) {
             condition={true}
             typegraphyData={`latitude ${Number(props?.city?.latitude)?.toFixed(
               2
-            )}`}
+            ) ?? ' not available'}`}
             typegraphystyles={{ mb: 0.5 }}
             loaderHeightWidth={"40"}
           />
@@ -46,13 +45,13 @@ function CityCard(props: ICityCardProps) {
             condition={true}
             typegraphyData={`longitude ${Number(
               props?.city?.longitude
-            )?.toFixed(2)}`}
+            )?.toFixed(2) ?? ' not available'}`}
             typegraphystyles={{ mb: 0.5 }}
             loaderHeightWidth={"40"}
           />
           <CustomTypography
             condition={true}
-            typegraphyData={props?.city?.Country ?? ""}
+            typegraphyData={props?.city?.Country ?? "City not available"}
             typegraphystyles={{ fontSize: 36, mt: 1.5, mb: 0 }}
             loaderHeightWidth={"50"}
           />
