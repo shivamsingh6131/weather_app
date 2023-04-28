@@ -1,10 +1,8 @@
 import { SetStateAction } from "react";
-import {
-  allWeatherData,
-  cityCordinatesInfo,
-  fetchCityName,
-} from "./Api/apiHelper";
+import { allWeatherData, cityCordinatesInfo, fetchCityName } from "./Api";
 import { ICityListData, Icordinates, IdailyWeatherData } from "./type/types";
+import { ISelectedCriteria } from "./type";
+import { weekly } from "./constants";
 
 //fetch city name on the basis of latitude and logitude.
 export const getCityName = async (
@@ -17,7 +15,7 @@ export const getCityName = async (
     const data = await fetchCityName({ latitude, longitude });
     setCityName({ ...cityName, ...data });
   } catch (error) {
-    console.log("getCityName: something went wrong " ,error);
+    console.log("getCityName: something went wrong ", error);
   }
 };
 
@@ -97,7 +95,7 @@ export const getCurrentLocation = (
   cityName: any,
   setCityName: any,
   cordinates: Icordinates,
-  setCordinates: any
+  setCordinates: React.Dispatch<SetStateAction<Icordinates>>
 ) => {
   navigator.geolocation.getCurrentPosition((position) => {
     setCordinates({
@@ -157,10 +155,7 @@ export const evaluateDailyBasedData = (dailyWeatherData: any) => {
       index++;
       if (index === 23) {
         date.push(
-          curr?.time
-            ?.split("T")?.[0]
-            ?.split("-")
-            ?.reverse()?.join("-")
+          curr?.time?.split("T")?.[0]?.split("-")?.reverse()?.join("-")
         );
         index = 0;
         const returnData = [...last, (count / 24)?.toFixed(2)];
@@ -191,4 +186,43 @@ export const evaluateWeeklyBasedData = (dailyWeatherData: any) => {
     }
     return [...last];
   }, []);
+};
+
+export const handleSelctionCriteria = (
+  selectedCriteria: string,
+  setSelectedCriteriaData: React.Dispatch<SetStateAction<IdailyWeatherData[]>>,
+  dailyWeatherData: IdailyWeatherData[]
+) => {
+  console.log("🚀 ~ file: helper.ts:196 ~ selectedCriteria:", selectedCriteria)
+  switch (selectedCriteria) {
+    case ISelectedCriteria.Today:
+      setSelectedCriteriaData(
+        evaluateTodayAndTomorrowData(dailyWeatherData, 0, 24)
+      );
+      break;
+    case ISelectedCriteria.Tomorrow:
+      const data = evaluateTodayAndTomorrowData(dailyWeatherData, 24, 48);
+      setSelectedCriteriaData([...data]);
+      break;
+    case ISelectedCriteria.Daily:
+      const { dailyData, date } = evaluateDailyBasedData(dailyWeatherData);
+      setSelectedCriteriaData([
+        ...date?.map((item, index) => {
+          return { time: item, temperature: dailyData[index] };
+        }),
+      ]);
+      break;
+
+    case ISelectedCriteria.Weekly:
+      let weeklyData = evaluateWeeklyBasedData(dailyWeatherData);
+      setSelectedCriteriaData([
+        ...weekly?.map((item, index) => {
+          return { time: item, temperature: weeklyData[index] };
+        }),
+      ]);
+      break;
+
+    default:
+      break;
+  }
 };

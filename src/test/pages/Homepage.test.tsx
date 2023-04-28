@@ -1,10 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import nock from "nock";
 import {
   currentWeatherDataAPIMock,
   weatherDataFor2Weeks,
-} from "../../utils/mock/homePage";
+} from "../../utils/mock/homePageMock";
 import Homepage from "../../pages/Homepage";
 import * as apiHelperModule from '../../utils/Api/apiHelper'
 import userEvent from "@testing-library/user-event";

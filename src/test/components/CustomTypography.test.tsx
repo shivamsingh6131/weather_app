@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { customTypographyPorpsMock } from "../../utils/mock/CustomTypographyMock";
+import { customTypographyPorpsMock } from "../../utils/mock";
 import CustomTypography from "../../components/CustomTypography";
 
 test("it should render cityCard CityCardContainer without crashing", async () => {

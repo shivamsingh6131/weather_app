@@ -6,6 +6,7 @@ import {
   fetchWeatherDataForCity,
   getCityName,
   getCurrentLocation,
+  handleSelctionCriteria,
 } from "../../utils";
 import * as apiHelperModule from "../../utils/Api/apiHelper";
 import {
@@ -20,7 +21,6 @@ import { ICityListData } from "../../utils/type";
 beforeEach(() => {
   const mockGeolocation = {
     getCurrentPosition: jest.fn().mockImplementation(() => {
-      console.log("being called");
       return {
         latitude: 23.0438564,
         longitude: 72.5086395,
@@ -89,23 +89,29 @@ test("it should properly exicute fetchWeatherDataForCity", async () => {
   const fetchCityNameApiSpy = jest
     .spyOn(apiHelperModule, "cityCordinatesInfo")
     .mockResolvedValueOnce(cityCordinatesInfoMock)
-    .mockRejectedValueOnce("test rejected");
+    .mockRejectedValueOnce("test rejected")
+    .mockRejectedValueOnce({error : 'testerror'});
 
   //try block
   expect(
-    await fetchWeatherDataForCity(["goa"], cityListData as ICityListData[], jest.fn(), jest.fn())
-  ).toBeUndefined();
-  expect(fetchCityNameApiSpy).toHaveBeenCalledTimes(1);
-  //   catch block
-  expect(
     await fetchWeatherDataForCity(
       ["goa"],
-      cityListData,
+      cityListData as ICityListData[],
       jest.fn(),
       jest.fn()
     )
   ).toBeUndefined();
+  expect(fetchCityNameApiSpy).toHaveBeenCalledTimes(1);
+  //   catch block
+  expect(
+    await fetchWeatherDataForCity(["goa"], cityListData, jest.fn(), jest.fn())
+  ).toBeUndefined();
   expect(fetchCityNameApiSpy).toHaveBeenCalledTimes(2);
+
+  expect(
+    await fetchWeatherDataForCity(["goa"], cityListData, jest.fn(), jest.fn())
+  ).toBeUndefined();
+  expect(fetchCityNameApiSpy).toHaveBeenCalledTimes(3);
 });
 
 test("it should properly exicute getCurrentLocation", async () => {
@@ -135,4 +141,19 @@ test("it should properly exicute evaluateWeeklyBasedData", () => {
   const functionCall = evaluateWeeklyBasedData(rawDailyWeatherDataMock);
   //2 weeks data
   expect(functionCall?.length).toEqual(2);
+});
+
+test("it should properly exicute handleSelctionCriteria", () => {
+  expect(
+    handleSelctionCriteria("Today", jest.fn(), dailyWeatherDataMock)
+  ).toEqual(undefined);
+  expect(
+    handleSelctionCriteria("Tomorrow", jest.fn(), dailyWeatherDataMock)
+  ).toEqual(undefined);
+  expect(
+    handleSelctionCriteria("Daily", jest.fn(), dailyWeatherDataMock)
+  ).toEqual(undefined);
+  expect(
+    handleSelctionCriteria("Weekly", jest.fn(), dailyWeatherDataMock)
+  ).toEqual(undefined);
 });

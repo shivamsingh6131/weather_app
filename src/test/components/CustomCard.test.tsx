@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { customCardPropsMock } from "../../utils/mock/customCard";
+import { customCardPropsMock } from "../../utils/mock";
 import CustomCard from "../../components/CustomCard";
 
 beforeEach(() => {
