@@ -1,6 +1,6 @@
-import { IMultipleSelectProps } from "../type";
+import { ICustomSelectProps } from "../type";
 
-export const customSelectPropsMock : IMultipleSelectProps = {
+export const customSelectPropsMock : ICustomSelectProps = {
   data: [
     {
       time: "Week 1",
