@@ -3,6 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import AcUnitSharpIcon from '@mui/icons-material/AcUnitSharp';
 import CustomTypography from "./CustomTypography";
 import { ICityCardProps } from "../utils/type";
 
@@ -18,34 +19,42 @@ function CityCard(props: ICityCardProps) {
           >
             <CustomTypography
               condition={true}
-              typegraphyData={props?.city?.currentCity ?? "current city not available"}
+              typegraphyData={
+                props?.city?.currentCity ?? "current city not available"
+              }
               typegraphystyles={{ fontSize: 26 }}
               loaderHeightWidth={"35"}
             />
             <CustomTypography
               condition={true}
-              typegraphyData={props?.city?.temperature as string | number ?? "temp not available"}
+              typegraphyData={props?.city?.temperature ?? "temp not available"}
               temperatureData={"°C"}
               typegraphystyles={{ fontSize: 36 }}
               loaderHeightWidth={"50"}
             />
           </Box>
           <Typography variant="body2" sx={{ mb: 4 }}>
-            <WbSunnyIcon sx={{ height: 75, width: 75, color: "orange" }} />
+            {(props?.city?.temperature as number) < 15 ? (
+              <AcUnitSharpIcon
+                sx={{ height: 75, width: 75, color: "skyblue" }}
+              />
+            ) : (
+              <WbSunnyIcon sx={{ height: 75, width: 75, color: "orange" }} />
+            )}
           </Typography>
           <CustomTypography
             condition={true}
-            typegraphyData={`latitude ${Number(props?.city?.latitude)?.toFixed(
-              2
-            ) ?? ' not available'}`}
+            typegraphyData={`latitude ${
+              Number(props?.city?.latitude)?.toFixed(2) ?? " not available"
+            }`}
             typegraphystyles={{ mb: 0.5 }}
             loaderHeightWidth={"40"}
           />
           <CustomTypography
             condition={true}
-            typegraphyData={`longitude ${Number(
-              props?.city?.longitude
-            )?.toFixed(2) ?? ' not available'}`}
+            typegraphyData={`longitude ${
+              Number(props?.city?.longitude)?.toFixed(2) ?? " not available"
+            }`}
             typegraphystyles={{ mb: 0.5 }}
             loaderHeightWidth={"40"}
           />
