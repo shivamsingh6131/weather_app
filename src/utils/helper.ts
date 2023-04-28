@@ -76,14 +76,16 @@ export const fetchWeatherDataForCity = async (
     };
     //to fix multiple same city card.
     const removeSameObjects = cityListData?.reduce((last: any, curr: any) => {
-      if (curr?.currentCity?.toLowerCase() === currentCity?.toLowerCase()) {
+      if (curr?.currentCity?.toLowerCase()?.trim() === currentCity?.toLowerCase()?.trim()) {
         return [...last];
       }
       setLoader(false);
       return [...last, curr];
     }, []);
 
-    setCityListData([...removeSameObjects, prepareCityData]);
+    const reversed = [...removeSameObjects, prepareCityData]?.reverse()
+
+    setCityListData([...reversed]);
     setLoader(false);
   } catch (error) {
     console.log("fetchWeatherDataForCity: something went wrong ", error);

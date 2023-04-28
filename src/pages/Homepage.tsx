@@ -99,7 +99,7 @@ const Homepage = () => {
   const propData = createSearchAppBarProps();
 
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div >
       <div style={{ paddingBottom: "50px" }}>
         <Header propData={propData} />
         <Typography

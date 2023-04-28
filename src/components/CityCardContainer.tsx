@@ -45,6 +45,7 @@ const CityCardContainer = (props: ICityCardContainer) => {
             justifyContent: "space-around",
             backgroundColor: "#FEF2F4",
             padding: "30px 0px",
+            width: "100%"
           }}
         >
           {props?.cityListData?.map((city: ICity) => {

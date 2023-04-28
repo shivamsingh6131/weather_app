@@ -41,8 +41,8 @@ const CustomCard = (props: ICustomCardProps) => {
   }, [cordinates]);
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <Grid container spacing={2} style={{ margin: "auto" }}>
+    <div style={{ textAlign: "center"  }}>
+      <Grid container spacing={2} style={{ margin: "auto", width : "100%"}}>
         <Grid
           item
           xs={1}
@@ -50,7 +50,7 @@ const CustomCard = (props: ICustomCardProps) => {
           md={3.5}
           lg={4}
           xl={4.5}
-          style={{ height: "auto" }}
+          style={{ height: "auto", width : "100%" }}
         ></Grid>
         <Grid
           item
@@ -63,7 +63,7 @@ const CustomCard = (props: ICustomCardProps) => {
           sx={{ pl: 0 }}
         >
           <Card
-            sx={{ minWidth: 275, backgroundColor: "#dae3fd", height: "auto" }}
+            sx={{ backgroundColor: "#dae3fd", height: "auto" }}
           >
             <CardContent>
               <Box
