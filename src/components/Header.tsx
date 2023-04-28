@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { ICustomHeaderProps } from "../utils/type/types";
+import CloudIcon from "@mui/icons-material/Cloud";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -50,7 +51,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const  Header = (props: ICustomHeaderProps) => {
+const Header = (props: ICustomHeaderProps) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: "#BA90C6" }}>
@@ -59,9 +60,18 @@ const  Header = (props: ICustomHeaderProps) => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{
+              flexGrow: 1,
+              display: {
+                xs: "none",
+                sm: "block",
+                display: "flex !important",
+                alignItems: "center !important",
+              },
+            }}
           >
-            🌦️Weather
+            <CloudIcon  sx={{pr : "10px"}} />
+            Weather
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -71,14 +81,13 @@ const  Header = (props: ICustomHeaderProps) => {
               placeholder="Search City Name..."
               inputProps={{ "aria-label": "search" }}
               value={props?.propData?.searchText}
-              onChange={(e) =>props?.propData?.setSearchText(e?.target?.value)
-              }
+              onChange={(e) => props?.propData?.setSearchText(e?.target?.value)}
             />
           </Search>
         </Toolbar>
       </AppBar>
     </Box>
   );
-}
+};
 
 export default Header;
