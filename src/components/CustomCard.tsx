@@ -41,16 +41,16 @@ const CustomCard = (props: ICustomCardProps) => {
   //redux
   const storeCustomCityInfo: ICustomCityInfo = useSelector(
     (state: any) => state?.customCityInfo
-    );
-    const dispatch = useAppDispatch();
-    //to get accurate data inside setInterval
+  );
+  const dispatch = useAppDispatch();
+  //to get accurate data inside setInterval
     const latestCustomCityLocalInfo = useRef<ICustomCityInfo>(storeCustomCityInfo);
-    
+
   //updating ref (to get the live data inside the setInterval)
   useEffect(() => {
     latestCustomCityLocalInfo.current = storeCustomCityInfo;
   }, [storeCustomCityInfo]);
-  
+
   const fetchWeatherDataWrapper = (refetch: boolean = false) => {
     if (props?.isCustomised && storeCustomCityInfo?.isCustomCityEnabled) {
       const localCordinates = {
@@ -84,9 +84,14 @@ const CustomCard = (props: ICustomCardProps) => {
   useEffect(() => {
     fetchWeatherDataWrapper();
     // To fetch Live data
-    setInterval(() => {
+    const inerval = setInterval(() => {
       fetchWeatherDataWrapper(true);
     }, 10000);
+
+    //clearing the interval
+    return () => {
+      clearInterval(inerval);
+    };
   }, [cordinates, storeCustomCityInfo]);
 
   return (
