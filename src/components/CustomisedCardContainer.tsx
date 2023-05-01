@@ -3,23 +3,31 @@ import React, { useEffect, useState } from "react";
 import CustomCard from "./CustomCard";
 import { ICustomisedCardContainerProps } from "../utils/type/types";
 import CustomSelect from "./CustomSelect";
+import {
+  updateCustomCityInfo,
+  updateSelectedCriteria,
+  updateSelectedTime,
+} from "../redux/reducers";
+import { useAppDispatch } from "../redux/store";
+import { useSelector } from "react-redux";
+import { list } from "../utils";
 
 const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
   const [criteriaChanged, setCriteriaChanged] = useState(true);
-  const {
-    list,
-    selectedCriteria,
-    setSelectedCriteria,
-    selectedCriteriaData,
-    selectedTime,
-    setSelectedTime,
-    setDailyWeatherData,
-    customisedData,
-  } = props;
+  const { customisedData } = props;
+
+  const dispatch = useAppDispatch();
+  const storeSelectedTime = useSelector((state: any) => state.selectedTime);
+  const storeSelectedCriteria = useSelector(
+    (state: any) => state.selectedCriteria
+  );
+  const storeSelectedCriteriaData = useSelector(
+    (state: any) => state.selectedCriteriaData
+  );
 
   useEffect(() => {
-    criteriaChanged && setSelectedTime("")
-  },[criteriaChanged])
+    criteriaChanged && dispatch(updateSelectedTime(""));
+  }, [storeSelectedCriteria]);
 
   return (
     <div>
@@ -33,13 +41,12 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
       <div style={{ textAlign: "center" }}>
         <CustomSelect
           data={list}
-          setVariable={selectedCriteria}
-          setterFunction={setSelectedCriteria}
+          setVariable={storeSelectedCriteria}
           inputCategory="Criteria"
           filteringCriteria="Criteria"
           setCriteriaChanged={setCriteriaChanged}
         />
-        {selectedCriteria && (
+        {storeSelectedCriteria && (
           <div
             style={{
               display: "flex",
@@ -52,25 +59,28 @@ const CustomisedCardContainer = (props: ICustomisedCardContainerProps) => {
               sx={{ paddingRight: "30px", height: "56px" }}
               variant="outlined"
               onClick={() => {
-                setSelectedCriteria("");
+                dispatch(updateSelectedCriteria(""));
+                dispatch(
+                  updateCustomCityInfo({
+                    isCustomCityEnabled: false,
+                  })
+                );
               }}
             >
               Remove Card
             </Button>
             <CustomSelect
-              data={selectedCriteriaData}
-              setVariable={selectedTime}
-              setterFunction={setSelectedTime}
-              filteringCriteria={selectedCriteriaData?.[0]?.time}
+              data={storeSelectedCriteriaData}
+              setVariable={storeSelectedTime}
+              filteringCriteria={storeSelectedCriteriaData?.[0]?.time}
               setCriteriaChanged={setCriteriaChanged}
             />
           </div>
         )}
       </div>
-      {selectedCriteria && (
+      {storeSelectedCriteria && (
         <CustomCard
-          setDailyWeatherData={setDailyWeatherData}
-          dailyWeatherData={selectedCriteriaData}
+          criteriaChanged={criteriaChanged}
           isCustomised={Boolean(customisedData)}
           customisedData={customisedData as string}
         />

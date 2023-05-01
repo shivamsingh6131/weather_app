@@ -6,8 +6,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { ICustomHeaderProps } from "../utils/type/types";
 import CloudIcon from "@mui/icons-material/Cloud";
+import { useDispatch, useSelector } from "react-redux";
+import { updateSearchText } from "../redux/reducers";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -51,11 +52,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Header = (props: ICustomHeaderProps) => {
+const Header = () => {
+  const dispatch = useDispatch();
+  const searchText = useSelector((state : any) => state?.searchText)
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: "#BA90C6" }}>
-        <Toolbar  style={{display : "flex", flexWrap : "wrap"}}>
+        <Toolbar style={{display : "flex", flexWrap : "wrap"}} >
           <Typography
             variant="h6"
             noWrap
@@ -81,8 +84,8 @@ const Header = (props: ICustomHeaderProps) => {
             <StyledInputBase
               placeholder="Search City Name..."
               inputProps={{ "aria-label": "search" }}
-              value={props?.propData?.searchText}
-              onChange={(e) => props?.propData?.setSearchText(e?.target?.value)}
+              value={searchText}
+              onChange={(e) => dispatch(updateSearchText(e?.target?.value))}
             />
           </Search>
         </Toolbar>

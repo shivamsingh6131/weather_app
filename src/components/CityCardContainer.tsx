@@ -1,12 +1,21 @@
 import React from "react";
-import { ICity, ICityCardContainer } from "../utils/type/types";
+import { ICity } from "../utils/type/types";
 import { Button, Grid, Typography } from "@mui/material";
 import CityCard from "./CityCard";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateCityListData,
+  updateCustomCityInfo,
+  updateDebouncedSearchText,
+} from "../redux/reducers";
 
-const CityCardContainer = (props: ICityCardContainer) => {
+const CityCardContainer = () => {
+  const dispatch = useDispatch();
+  const storeCityListData = useSelector((state: any) => state.cityListData);
+
   return (
     <div>
-      {props?.cityListData?.length > 0 && (
+      {storeCityListData?.length > 0 && (
         <div
           style={{
             display: "flex",
@@ -27,15 +36,25 @@ const CityCardContainer = (props: ICityCardContainer) => {
             variant="outlined"
             style={{ padding: "0px 15px", height: "56px" }}
             onClick={() => {
-              props?.setCityListData([]);
+              //clearing city data
+              dispatch(updateCityListData([]));
+              //clearing localstorage
               localStorage.removeItem("cityListData");
+              //clearing custom city
+              dispatch(
+                updateCustomCityInfo({
+                  isCustomCityEnabled: false,
+                })
+              );
+              //clearing searched texts
+              dispatch(updateDebouncedSearchText([]));
             }}
           >
             Clear
           </Button>
         </div>
       )}
-      {props?.cityListData?.length > 0 && (
+      {storeCityListData?.length > 0 && (
         <Grid
           container
           spacing={3}
@@ -45,10 +64,10 @@ const CityCardContainer = (props: ICityCardContainer) => {
             justifyContent: "space-around",
             backgroundColor: "#FEF2F4",
             padding: "30px 0px",
-            width: "100%"
+            width: "100%",
           }}
         >
-          {props?.cityListData?.map((city: ICity) => {
+          {storeCityListData?.map((city: ICity) => {
             return (
               <Grid
                 key={city?.currentCity ?? "" + city?.Country}

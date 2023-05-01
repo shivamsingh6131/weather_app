@@ -3,11 +3,41 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import AcUnitSharpIcon from '@mui/icons-material/AcUnitSharp';
+import AcUnitSharpIcon from "@mui/icons-material/AcUnitSharp";
 import CustomTypography from "./CustomTypography";
-import { ICityCardProps } from "../utils/type";
+import { ICityCardProps, ICustomCityInfo } from "../utils/type";
+import { Button, styled } from "@mui/material";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCustomCityInfo } from "../redux/reducers";
+
+const StyledButton = styled(Button)`
+  background-color: #f7e1ae;
+  color: black;
+  padding: 6px 12px;
+  &:hover {
+    background-color: #dae3fd;
+  }
+`;
 
 function CityCard(props: ICityCardProps) {
+  const dispatch = useDispatch();
+  const handleCustomCityInfo = () => {
+    const customCityInfo: ICustomCityInfo = {
+      currentCity: props?.city?.currentCity,
+      temperature: props?.city?.temperature,
+      latitude: props?.city?.latitude,
+      longitude: props?.city?.longitude,
+      stateDistrict: props?.city?.stateDistrict,
+      Country: props?.city?.Country,
+      isCustomCityEnabled: true,
+    };
+    dispatch(updateCustomCityInfo({ ...customCityInfo }));
+  };
+  const storeSelectedCriteria = useSelector(
+    (state: any) => state.selectedCriteria
+  );
+
   return (
     <div style={{ textAlign: "center" }}>
       <Card sx={{ minWidth: 275, backgroundColor: "#BA90C6", height: "auto" }}>
@@ -45,7 +75,7 @@ function CityCard(props: ICityCardProps) {
           <CustomTypography
             condition={true}
             typegraphyData={`latitude ${
-              isNaN(props?.city?.latitude as number) ? " not available" : Number(props?.city?.latitude)?.toFixed(2)
+              Number(props?.city?.latitude)?.toFixed(2) ?? " not available"
             }`}
             typegraphystyles={{ mb: 0.5 }}
             loaderHeightWidth={"40"}
@@ -53,7 +83,7 @@ function CityCard(props: ICityCardProps) {
           <CustomTypography
             condition={true}
             typegraphyData={`longitude ${
-              isNaN(props?.city?.longitude as number) ? " not available" : Number(props?.city?.longitude)?.toFixed(2)
+              Number(props?.city?.longitude)?.toFixed(2) ?? " not available"
             }`}
             typegraphystyles={{ mb: 0.5 }}
             loaderHeightWidth={"40"}
@@ -70,6 +100,15 @@ function CityCard(props: ICityCardProps) {
             typegraphystyles={{ mb: 1.5, fontSize: 16 }}
             loaderHeightWidth={"50"}
           />
+          {storeSelectedCriteria && (
+            <StyledButton
+              variant="outlined"
+              startIcon={<AutoAwesomeIcon />}
+              onClick={handleCustomCityInfo}
+            >
+              Get Customised Data
+            </StyledButton>
+          )}
         </CardContent>
       </Card>
     </div>

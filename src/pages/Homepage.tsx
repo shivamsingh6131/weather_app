@@ -1,106 +1,100 @@
 import React, { useEffect, useState } from "react";
 import {
   fetchWeatherDataForCity,
-  handleSelctionCriteria,
+  handleSelectionCriteria,
 } from "../utils/helper";
-import { ICityListData, IdailyWeatherData } from "../utils/type/types";
+import {  IdailyWeatherData } from "../utils/type/types";
 import Header from "../components/Header";
 import { Typography } from "@mui/material";
 import CustomCard from "../components/CustomCard";
 import CustomisedCardContainer from "../components/CustomisedCardContainer";
 import CustomPopup from "../components/CustomPopup";
 import CityCardContainer from "../components/CityCardContainer";
-import { list } from "../utils";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateDebouncedSearchText,
+  updateSelectedCriteriaData,
+} from "../redux/reducers";
 
 const Homepage = () => {
-  //header component data
-  const [searchText, setSearchText] = useState<string>("");
-  const [debouncedSearchText, setDebouncedSearchText] = useState<string[]>([]);
-  //handle all the data for weather
-  const [dailyWeatherData, setDailyWeatherData] = useState<IdailyWeatherData[]>(
-    []
-  );
-  const [selectedTime, setSelectedTime] = useState<string>("");
-  //for second card
+  //for second card (initial data when criteria chananges)
   const [customisedData, setCustomisedData] = useState<number>(0);
-  //for the dropdown
-  const [selectedCriteria, setSelectedCriteria] = useState<string>("");
-  const [selectedCriteriaData, setSelectedCriteriaData] = useState<
-    IdailyWeatherData[]
-  >([]);
-  //city wise data
-  const [cityListData, setCityListData] = useState<ICityListData[]>([
-    ...(JSON.parse(localStorage.getItem("cityListData") as string) ?? []),
-  ]);
   //loader
   const [loader, setLoader] = useState<boolean>(false);
+  
+  //Redux
+  const dispatch = useDispatch();
+  const {
+    dailyWeatherData : storeDailyWeatherData,
+    selectedTime : storeSelectedTime,
+    selectedCriteria: storeSelectedCriteria,
+    selectedCriteriaData: storeSelectedCriteriaData,
+    cityListData: storeCityListData,
+    searchText: storeSearchText,
+    debouncedSearchText: storeDebouncedSearchText,
+  } = useSelector((state: any) => state);
 
-  //Debouncing logic
+  //Debouncing
   useEffect(() => {
-    searchText?.length > 0 && setLoader(true);
+    storeSearchText?.length > 0 && setLoader(true);
     const getData = setTimeout(() => {
       if (
-        searchText &&
-        searchText !== debouncedSearchText[debouncedSearchText?.length - 1]
+        storeSearchText &&
+        storeSearchText !== storeDebouncedSearchText[storeDebouncedSearchText?.length - 1]
       ) {
-        setDebouncedSearchText([...debouncedSearchText, searchText]);
+        dispatch(updateDebouncedSearchText([...storeDebouncedSearchText, storeSearchText]));
       } else {
         setLoader(false);
       }
     }, 2000);
     //clearing event (junk event)
     return () => clearTimeout(getData);
-  }, [searchText]);
+  }, [storeSearchText]);
 
-  //featch weather for city
+  //fetch weather for city
   useEffect(() => {
-    if (searchText !== "" && debouncedSearchText?.includes(searchText)) {
+    if (storeSearchText !== "" && storeDebouncedSearchText?.includes(storeSearchText)) {
       fetchWeatherDataForCity(
-        debouncedSearchText,
-        cityListData,
-        setCityListData,
-        setLoader,
-        setSearchText
+        storeDebouncedSearchText,
+        storeCityListData,
+        dispatch,
+        setLoader
       );
     }
-  }, [debouncedSearchText]);
+  }, [storeDebouncedSearchText]);
 
-  // update localStorage
+  // update localstorage
   useEffect(() => {
-    localStorage.setItem("cityListData", JSON.stringify([...cityListData]));
-  }, [cityListData]);
+    localStorage.setItem(
+      "cityListData",
+      JSON.stringify([...storeCityListData])
+    );
+  }, [storeCityListData]);
 
   //to create and update the second customSelect data.
   useEffect(() => {
-    handleSelctionCriteria(
-      selectedCriteria,
-      setSelectedCriteriaData,
-      dailyWeatherData
+    const criteriaSpecificData = handleSelectionCriteria(
+      storeSelectedCriteria,
+      storeDailyWeatherData
     );
-  }, [selectedCriteria]);
+    criteriaSpecificData &&
+      dispatch(updateSelectedCriteriaData([...(criteriaSpecificData as [])]));
+  }, [storeSelectedCriteria,storeDailyWeatherData]);
 
-  //to create the data for the second custom card (according to selected criteria).
+  //creating card data to be shown (for customised card)
   useEffect(() => {
-    const filterdData: IdailyWeatherData[] = selectedCriteriaData
+    const filterdData: IdailyWeatherData[] = storeSelectedCriteriaData
       ?.slice(0, 24)
-      ?.filter((item: IdailyWeatherData) => item?.time?.includes(selectedTime));
-
+      ?.filter((item: IdailyWeatherData) =>
+        item?.time?.includes(storeSelectedTime)
+      );
     setCustomisedData(filterdData?.[0]?.temperature);
-  }, [selectedTime, selectedCriteriaData]);
-
-  //creating props for Header
-  const createSearchAppBarProps = () => {
-    return {
-      searchText,
-      setSearchText,
-    };
-  };
-  const propData = createSearchAppBarProps();
+  }, [storeSelectedTime, storeSelectedCriteriaData]);
 
   return (
-    <div >
+    <div>
       <div style={{ paddingBottom: "50px" }}>
-        <Header propData={propData} />
+        <Header/>
         <Typography
           color="text.secondary"
           style={{ textAlign: "center", paddingTop: "15px" }}
@@ -108,29 +102,10 @@ const Homepage = () => {
         >
           Live Data
         </Typography>
-        <CustomCard
-          setDailyWeatherData={setDailyWeatherData}
-          dailyWeatherData={dailyWeatherData}
-        />
-        <CustomisedCardContainer
-          selectedCriteria={selectedCriteria}
-          setSelectedCriteria={setSelectedCriteria}
-          selectedCriteriaData={selectedCriteriaData}
-          selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
-          setDailyWeatherData={setDailyWeatherData}
-          customisedData={customisedData}
-          list={list}
-        />
+        <CustomCard   isCustomised={false} />
+        <CustomisedCardContainer customisedData={customisedData} />
       </div>
-      {loader ? (
-        <CustomPopup />
-      ) : (
-        <CityCardContainer
-          cityListData={cityListData}
-          setCityListData={setCityListData}
-        />
-      )}
+      {loader ? <CustomPopup /> : <CityCardContainer />}
     </div>
   );
 };

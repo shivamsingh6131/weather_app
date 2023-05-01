@@ -24,10 +24,9 @@ export interface IPropData {
 }
 
 export interface ICustomCardProps {
-  setDailyWeatherData: React.Dispatch<SetStateAction<IdailyWeatherData[]>>;
-  dailyWeatherData: IdailyWeatherData[];
   isCustomised?: boolean;
   customisedData?: string;
+  criteriaChanged?: boolean;
 }
 
 export interface IdailyWeatherData {
@@ -43,7 +42,7 @@ export interface ICustomSelectProps {
   haveCriteriaChanged?: boolean;
   selectTwo?: boolean;
   setHavecriteriaChanged?: React.Dispatch<SetStateAction<boolean>>;
-  setterFunction: React.Dispatch<React.SetStateAction<string>> | React.Dispatch<React.SetStateAction<string>>;
+  // setterFunction: any;
   setCriteriaChanged?: React.Dispatch<SetStateAction<boolean>>;
 }
 export interface ICityCardContainer {
@@ -51,14 +50,7 @@ export interface ICityCardContainer {
   setCityListData: React.Dispatch<SetStateAction<ICityListData[]>>;
 }
 export interface ICustomisedCardContainerProps {
-  selectedCriteria: string;
-  selectedCriteriaData: IdailyWeatherData[];
-  selectedTime: string;
   customisedData: string | number;
-  list: string[];
-  setSelectedCriteria: React.Dispatch<SetStateAction<string>>;
-  setSelectedTime: React.Dispatch<SetStateAction<string>>;
-  setDailyWeatherData: React.Dispatch<SetStateAction<IdailyWeatherData[]>>;
 }
 
 export interface ICityCardProps {
@@ -79,6 +71,25 @@ export interface ICityListData {
   currentCity: string;
   latitude: number;
   longitude: number;
-  stateDistrict: string;
+  stateDistrict: string | any;
   temperature: number;
+}
+
+export interface ICityDataMapped {
+  country: string;
+  district: string;
+  suburb: string;
+}
+
+export interface IWeatherDataMapped {
+  currentTemperature: number;
+  temperatureExtended: number[];
+  timeExtended: string[];
+  unit: string;
+  latitude: number,
+  longitude: number,
+}
+
+export interface ICustomCityInfo extends ICity {
+  isCustomCityEnabled : boolean,
 }

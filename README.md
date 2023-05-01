@@ -2,7 +2,7 @@
 
 I have used pure JavaScript *functional programming* in this Assignment to *showcase how much understanding i have of pure React and Javascript (that is quite complicated to implement and understand in first go)*. Functional programming is a programming paradigm that emphasizes the use of functions to create programs. In functional programming, functions are treated as first-class citizens, which means that they can be *passed around just like any other value*.
 
-To make my code more modular and maintainable, I have created and *used helper functions*. Helper functions are typically pure functions that perform a specific task, such as formatting the data accourding to the need and creating the set of data, etc... By *encapsulating complex logic in helper functions*, I have been able to make my ***code more modular, easier to read and maintain***.
+To make my code more modular and maintainable, I have created and *used helper functions*. Helper functions are typically pure functions that perform a specific task, such as formatting the data according to the need and creating the set of data, etc... By *encapsulating complex logic in helper functions*, I have been able to make my ***code more modular, easier to read and maintain***.
 
 Finally, I have used functional programming in conjunction with React by *passing setter functions as arguments to my helper functions*. This allows me to update the state of my React component in a pure and predictable way, without introducing any side effects. By doing all the business logic with helper functions, I have been able to keep my ***React components clean and focused on rendering***.
 
