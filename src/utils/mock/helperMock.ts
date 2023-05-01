@@ -1,4 +1,4 @@
-import { ICityListData } from "../type";
+import { ICityListData, IdailyWeatherData } from "../type";
 
 export const allWeatherReturnMock = {
   latitude: 23,
@@ -1628,7 +1628,7 @@ export const dailyWeatherDataMock = [
   },
 ];
 
-export const rawDailyWeatherDataMock = [
+export const rawDailyWeatherDataMock : IdailyWeatherData[] = [
   {
     time: "2023-04-28T01:00",
     temperature: 26.7,
@@ -3160,8 +3160,5 @@ export const rawDailyWeatherDataMock = [
   {
     time: "2023-05-13T23:00",
     temperature: 30,
-  },
-  {
-    temperature: 29.5,
   },
 ];

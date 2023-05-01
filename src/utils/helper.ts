@@ -43,7 +43,8 @@ export const fetchWeatherDataForCity = async (
   cityData: string[],
   cityListData: ICityListData[],
   setCityListData: React.Dispatch<SetStateAction<ICityListData[]>>,
-  setLoader: React.Dispatch<SetStateAction<boolean>>
+  setLoader: React.Dispatch<SetStateAction<boolean>>,
+  setSearchText?: React.Dispatch<SetStateAction<string>>
 ) => {
   try {
     const currentCity = cityData[cityData.length - 1];
@@ -86,6 +87,7 @@ export const fetchWeatherDataForCity = async (
     const reversed = [...removeSameObjects, prepareCityData]?.reverse()
 
     setCityListData([...reversed]);
+    setSearchText?.("")
     setLoader(false);
   } catch (error) {
     console.log("fetchWeatherDataForCity: something went wrong ", error);
@@ -145,14 +147,14 @@ export const evaluateTodayAndTomorrowData = (
   );
 };
 //evaluates daily bassis data and returns
-export const evaluateDailyBasedData = (dailyWeatherData: any) => {
+export const evaluateDailyBasedData = (dailyWeatherData: IdailyWeatherData[]) => {
   let index: number = 0;
   let count: number = 0;
   let date: string[] = [];
 
   const dailyWeatherDataUpdated = dailyWeatherData
     ?.slice(0, 360)
-    ?.reduce((last: any, curr: any) => {
+    ?.reduce((last: any, curr: IdailyWeatherData) => {
       count += curr?.temperature;
       index++;
       if (index === 23) {
@@ -173,11 +175,11 @@ export const evaluateDailyBasedData = (dailyWeatherData: any) => {
   };
 };
 //evaluates daily bassis data and returns
-export const evaluateWeeklyBasedData = (dailyWeatherData: any) => {
+export const evaluateWeeklyBasedData = (dailyWeatherData: IdailyWeatherData[]) => {
   let weeklyIndex: number = 0;
   let weeklyCount: number = 0;
 
-  return dailyWeatherData?.slice(0, 384)?.reduce((last: any, curr: any) => {
+  return dailyWeatherData?.slice(0, 384)?.reduce((last: any, curr: IdailyWeatherData) => {
     weeklyCount += curr?.temperature;
     weeklyIndex++;
     if (weeklyIndex === 168) {
@@ -195,7 +197,6 @@ export const handleSelctionCriteria = (
   setSelectedCriteriaData: React.Dispatch<SetStateAction<IdailyWeatherData[]>>,
   dailyWeatherData: IdailyWeatherData[]
 ) => {
-  console.log("🚀 ~ file: helper.ts:196 ~ selectedCriteria:", selectedCriteria)
   switch (selectedCriteria) {
     case ISelectedCriteria.Today:
       setSelectedCriteriaData(

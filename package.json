@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@fvilers/disable-react-devtools": "^1.3.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.1",
     "@testing-library/jest-dom": "^5.16.5",
@@ -28,7 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
-    "clearCache": "npx jest --clearCache",
+    "test:clearCache": "npx jest --clearCache",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -40,9 +41,9 @@
   "jest": {
     "coveragePathIgnorePatterns": [
       "node_modules/*",
-      "weatherFrontend/src/utils/type",
-      "weatherFrontend/src/utils/constants.ts",
-      "weatherFrontend/src/index.tsx"
+      "src/index.tsx",
+      "src/utils/type",
+      "src/utils/constants.ts"
     ]
   },
   "browserslist": {
