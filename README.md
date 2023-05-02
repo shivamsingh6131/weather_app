@@ -8,6 +8,7 @@
 - [Redux Version](https://www.notion.so/Weather-app-Documentation-4d6ec5138153408a85e244fad1a70eb3)
 - [How to Use](https://www.notion.so/Weather-app-Documentation-4d6ec5138153408a85e244fad1a70eb3)
 - [Commands](https://www.notion.so/Weather-app-Documentation-4d6ec5138153408a85e244fad1a70eb3)
+- [Docker](https://www.notion.so/Weather-app-Documentation-4d6ec5138153408a85e244fad1a70eb3)
 
 ---
 
@@ -159,3 +160,30 @@ sh ./scripts/setup.sh
 log: Node already installed v16.13.2
 log: npm already installed -v9.4.1*
 ```
+
+This new branch doesn't interfere main and migrationRedux branches, This branch is an extension of the migrationRedux branch with some more add-on styling as well as the redux test cases. (as I don't have a task for now, I just added some micro animations to the UI)
+
+- Added Micro Animations while rendering.
+- Created Redux test cases Wrapper (setup) and updated test case for Redux as well)
+
+Link:- [https://weather-micro-animation.netlify.app/](https://weather-micro-animation.netlify.app/)
+
+### Docker
+
+*You can also find this on docker-hub*
+
+[https://hub.docker.com/layers/shivam6131/gateway-assignment/latest/images/sha256-036a9285b71bab71f7dd3e13523dafd83a82d135f133d13811d3ac0664f7e720?context=repo](https://hub.docker.com/layers/shivam6131/gateway-assignment/latest/images/sha256-036a9285b71bab71f7dd3e13523dafd83a82d135f133d13811d3ac0664f7e720?context=repo)
+
+Step 1
+
+```docker
+docker pull shivam6131/gateway-assignment
+```
+
+Step 2 (This will run the image on port [***http://localhost:3000/***](http://localhost:3000/))
+
+```docker
+docker run -p3000:3000 shivam6131/gateway-assignment
+```
+
+Now, you can find the weather application running on your local host ([***http://localhost:3000/](http://localhost:3000/))***.
